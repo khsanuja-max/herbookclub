@@ -21,8 +21,8 @@ export type WallBook = {
   isbn: string;
   title: string;
   author: string;
-  /** Roshi's words about the book: her video note, or her headline for the monthly pick */
-  note: string;
+  /** Roshi's words: her full review for the monthly pick, or a video book's review (or else its short note) */
+  words: { headline?: string; paragraphs: string[] };
   /** Where Roshi talks about the book on the site */
   mention: { label: string; href: string };
   coverAvailable: boolean;
@@ -42,7 +42,7 @@ const collectBooks = cache(async (): Promise<Map<string, BaseBook>> => {
     isbn: pick.isbn,
     title: pick.title,
     author: pick.author,
-    note: pick.headline,
+    words: { headline: pick.headline, paragraphs: pick.review },
     mention: { label: "This month’s pick", href: "/this-months-pick" },
   });
 
@@ -54,7 +54,7 @@ const collectBooks = cache(async (): Promise<Map<string, BaseBook>> => {
         isbn: book.isbn,
         title: book.title,
         author: book.author,
-        note: book.note,
+        words: { paragraphs: book.review?.length ? book.review : [book.note] },
         mention: {
           label: video.title,
           href: `/videos/${video.slug}#${bookAnchor(book.isbn)}`,

@@ -90,6 +90,7 @@ The file name becomes the page's web address, so use lowercase words joined by d
 | `youtubeVideoId` | Same as above: leave as `""` until the video is up, then paste the part after `v=`. |
 | `summary` | A sentence or two about the video. |
 | `books` | Every book in the video, **in the order you mention them**. Each book has a `title`, `author`, `isbn` and a short `note`. To add a book, copy one `{ … }` block, put a comma between blocks, and change the details. |
+| `review` *(optional, inside a book)* | A longer review of that book, one paragraph per line, written just like the `review` in This Month's Pick: `"review": ["First paragraph.", "Second paragraph."]`. When a visitor opens the book on the Book Wall, they see this review; if you leave it out, they see your short `note` instead. |
 
 **To remove a video:** delete its file.
 
@@ -178,6 +179,10 @@ The text in this file right now is a **placeholder** — replace it with your ow
 Page: `herbookclub.vercel.app/book-wall`
 
 **You don't need to add books to the wall.** Every book from This Month's Pick and your video pages appears on it automatically.
+
+### Opening a book
+
+When a visitor clicks or taps a cover, the book lifts off the wall and opens. Inside, they see a Google Books preview when one exists (see below); otherwise the pages show **your words**: your full review for This Month's Pick, or for a video book its `review` if you've written one (otherwise its `note`), plus where to buy or borrow it. Next to the book are its "If you loved this, try…" connections, and each opened book gets its own link (for example `herbookclub.vercel.app/book-wall#book-9780593546178`) that can be shared.
 
 ### Book previews
 

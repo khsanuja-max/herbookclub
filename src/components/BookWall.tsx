@@ -2,18 +2,10 @@
 
 import type MatterJS from "matter-js";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { WallBook } from "@/lib/wall";
 import { BookCover } from "./BookCover";
-
-export type WallItem = {
-  isbn: string;
-  title: string;
-  author: string;
-  coverAvailable: boolean;
-  /** Where choosing the cover goes */
-  href: string;
-};
+import { OpenBook, type CoverState } from "./OpenBook";
 
 type Matter = typeof MatterJS;
 
@@ -29,6 +21,14 @@ type MouseHandlers = {
   mousewheel: EventListener;
 };
 
+type WallController = {
+  pause: () => void;
+  resume: () => void;
+  /** Current rotation of a cover, in radians */
+  getAngle: (isbn: string) => number;
+  destroy: () => void;
+};
+
 function shuffle<T>(items: T[]) {
   for (let i = items.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -37,16 +37,22 @@ function shuffle<T>(items: T[]) {
   return items;
 }
 
+/** The ISBN in a #book-<ISBN> address, if it's a book on the wall. */
+function isbnFromHash(books: WallBook[]) {
+  const match = window.location.hash.match(/^#book-([0-9Xx]{10,13})$/);
+  return match && books.some((book) => book.isbn === match[1]) ? match[1] : null;
+}
+
 /**
  * Starts the physics wall: one body per cover, no gravity, walls around the edges,
- * and a mouse/touch constraint for dragging. Returns a function that tears it all down.
+ * and a mouse/touch constraint for dragging.
  */
 function startWall(
   Matter: Matter,
   container: HTMLDivElement,
   elements: HTMLAnchorElement[],
-  onOpen: (href: string) => void,
-) {
+  onOpen: (isbn: string) => void,
+): WallController {
   const { Bodies, Body, Composite, Engine, Events, Mouse, MouseConstraint, Sleeping } =
     Matter;
 
@@ -91,6 +97,9 @@ function startWall(
     });
   });
   Composite.add(engine.world, bodies);
+  const bodyByIsbn = new Map(
+    elements.map((element, i) => [element.dataset.wallBook ?? "", bodies[i]]),
+  );
 
   // Fixed walls just outside the container
   let walls: MatterJS.Body[] = [];
@@ -145,8 +154,8 @@ function startWall(
     const { x, y, link } = press;
     press = null;
     if (Math.hypot(event.clientX - x, event.clientY - y) < CLICK_DISTANCE) {
-      const href = link.getAttribute("href");
-      if (href) onOpen(href);
+      const isbn = link.dataset.wallBook;
+      if (isbn) onOpen(isbn);
     }
   };
   const onPointerCancel = () => {
@@ -166,10 +175,11 @@ function startWall(
     });
   };
 
-  // Animation loop, paused when the wall is off-screen or the tab is hidden
+  // Animation loop, paused when the wall is off-screen, the tab is hidden, or a book is open
   let frame = 0;
   let onScreen = true;
   let tabVisible = !document.hidden;
+  let paused = false;
 
   const tick = () => {
     Engine.update(engine, 1000 / 60);
@@ -177,7 +187,7 @@ function startWall(
     frame = requestAnimationFrame(tick);
   };
   const start = () => {
-    if (!frame && onScreen && tabVisible) frame = requestAnimationFrame(tick);
+    if (!frame && onScreen && tabVisible && !paused) frame = requestAnimationFrame(tick);
   };
   const stop = () => {
     if (frame) cancelAnimationFrame(frame);
@@ -221,102 +231,241 @@ function startWall(
   sync();
   start();
 
-  return () => {
-    stop();
-    intersection.disconnect();
-    resize.disconnect();
-    document.removeEventListener("visibilitychange", onVisibility);
-    container.removeEventListener("pointerdown", onPointerDown);
-    window.removeEventListener("pointerup", onPointerUp);
-    window.removeEventListener("pointercancel", onPointerCancel);
-    window.removeEventListener("mouseup", releaseOutside);
-    container.removeEventListener("mousemove", handlers.mousemove);
-    container.removeEventListener("mousedown", handlers.mousedown);
-    container.removeEventListener("mouseup", handlers.mouseup);
-    container.removeEventListener("touchmove", handlers.mousemove);
-    container.removeEventListener("touchstart", handlers.mousedown);
-    container.removeEventListener("touchend", handlers.mouseup);
-    Events.off(mouseConstraint, "startdrag");
-    Composite.clear(engine.world, false);
-    Engine.clear(engine);
-    container.dataset.physics = "off";
-    container.style.opacity = "";
-    elements.forEach((element) => {
-      element.style.transform = "";
-      element.style.zIndex = "";
-    });
+  return {
+    pause: () => {
+      paused = true;
+      stop();
+    },
+    resume: () => {
+      paused = false;
+      start();
+    },
+    getAngle: (isbn) => bodyByIsbn.get(isbn)?.angle ?? 0,
+    destroy: () => {
+      stop();
+      intersection.disconnect();
+      resize.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      container.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerCancel);
+      window.removeEventListener("mouseup", releaseOutside);
+      container.removeEventListener("mousemove", handlers.mousemove);
+      container.removeEventListener("mousedown", handlers.mousedown);
+      container.removeEventListener("mouseup", handlers.mouseup);
+      container.removeEventListener("touchmove", handlers.mousemove);
+      container.removeEventListener("touchstart", handlers.mousedown);
+      container.removeEventListener("touchend", handlers.mouseup);
+      Events.off(mouseConstraint, "startdrag");
+      Composite.clear(engine.world, false);
+      Engine.clear(engine);
+      container.dataset.physics = "off";
+      elements.forEach((element) => {
+        element.style.transform = "";
+        element.style.zIndex = "";
+      });
+    },
   };
 }
 
-export function BookWall({ books }: { books: WallItem[] }) {
-  const router = useRouter();
+export function BookWall({ books }: { books: WallBook[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const controllerRef = useRef<WallController | null>(null);
+  const openIsbnRef = useRef<string | null>(null);
+  /** Whether opening the book added a #book- entry to the browser history */
+  const pushedRef = useRef(false);
 
+  const [openIsbn, setOpenIsbn] = useState<string | null>(null);
+  const [trail, setTrail] = useState<string[]>([]);
+  const [closeRequested, setCloseRequested] = useState(false);
+
+  const booksByIsbn = useMemo(
+    () => new Map(books.map((book) => [book.isbn, book])),
+    [books],
+  );
+
+  const coverElement = useCallback(
+    (isbn: string) =>
+      containerRef.current?.querySelector<HTMLAnchorElement>(
+        `a[data-wall-book="${isbn}"]`,
+      ) ?? null,
+    [],
+  );
+
+  const openBook = useCallback(
+    (isbn: string, fromHistory = false) => {
+      if (openIsbnRef.current || !booksByIsbn.has(isbn)) return;
+      if (fromHistory) {
+        pushedRef.current = false;
+      } else {
+        window.history.pushState(window.history.state, "", `#book-${isbn}`);
+        pushedRef.current = true;
+      }
+      controllerRef.current?.pause();
+      const cover = coverElement(isbn);
+      if (cover) cover.style.visibility = "hidden";
+      openIsbnRef.current = isbn;
+      setOpenIsbn(isbn);
+      setTrail([isbn]);
+      setCloseRequested(false);
+    },
+    [booksByIsbn, coverElement],
+  );
+
+  const getCoverState = useCallback(
+    (isbn: string): CoverState | null => {
+      const element = coverElement(isbn);
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      return {
+        centerX: rect.left + rect.width / 2,
+        centerY: rect.top + rect.height / 2,
+        width: element.offsetWidth,
+        angle: controllerRef.current?.getAngle(isbn) ?? 0,
+      };
+    },
+    [coverElement],
+  );
+
+  const handleFollow = useCallback(
+    (isbn: string) => {
+      const previous = openIsbnRef.current;
+      if (previous) {
+        const previousCover = coverElement(previous);
+        if (previousCover) previousCover.style.visibility = "";
+      }
+      const nextCover = coverElement(isbn);
+      if (nextCover) nextCover.style.visibility = "hidden";
+      window.history.replaceState(window.history.state, "", `#book-${isbn}`);
+      openIsbnRef.current = isbn;
+      setOpenIsbn(isbn);
+      setTrail((current) => [...current, isbn]);
+    },
+    [coverElement],
+  );
+
+  const handleClosed = useCallback(() => {
+    const isbn = openIsbnRef.current;
+    const cover = isbn ? coverElement(isbn) : null;
+    if (cover) cover.style.visibility = "";
+    openIsbnRef.current = null;
+    setOpenIsbn(null);
+    setTrail([]);
+    setCloseRequested(false);
+    controllerRef.current?.resume();
+
+    if (window.location.hash.startsWith("#book-")) {
+      if (pushedRef.current) window.history.back();
+      else
+        window.history.replaceState(
+          window.history.state,
+          "",
+          window.location.pathname + window.location.search,
+        );
+    }
+    pushedRef.current = false;
+    cover?.focus({ preventScroll: true });
+  }, [coverElement]);
+
+  // Start the physics (unless the visitor prefers reduced motion), then open any book in the address
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    // Reduced motion: keep the calm, still grid and never load the physics engine
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     let cancelled = false;
-    let stopWall: (() => void) | undefined;
+    const openFromAddress = () => {
+      const isbn = isbnFromHash(books);
+      if (isbn) openBook(isbn, true);
+    };
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const frame = requestAnimationFrame(openFromAddress);
+      return () => {
+        cancelled = true;
+        cancelAnimationFrame(frame);
+      };
+    }
 
     import("matter-js").then((module) => {
       if (cancelled) return;
       const elements = Array.from(
         container.querySelectorAll<HTMLAnchorElement>("a[data-wall-book]"),
       );
-      stopWall = startWall(module.default, container, elements, (href) =>
-        router.push(href),
+      controllerRef.current = startWall(module.default, container, elements, (isbn) =>
+        openBook(isbn),
       );
+      openFromAddress();
     });
 
     return () => {
       cancelled = true;
-      stopWall?.();
+      controllerRef.current?.destroy();
+      controllerRef.current = null;
     };
-  }, [router]);
+  }, [books, openBook]);
+
+  // The back and forward buttons close and reopen books
+  useEffect(() => {
+    const onPopState = () => {
+      const isbn = isbnFromHash(books);
+      if (!isbn && openIsbnRef.current) setCloseRequested(true);
+      else if (isbn && !openIsbnRef.current) openBook(isbn, true);
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [books, openBook]);
+
+  const openBookData = openIsbn ? (booksByIsbn.get(openIsbn) ?? null) : null;
 
   return (
-    <div
-      ref={containerRef}
-      data-physics="off"
-      className="group/wall relative isolate grid h-[70svh] max-h-[900px] min-h-[480px] grid-cols-[repeat(auto-fill,minmax(96px,1fr))] content-center justify-items-center gap-6 overflow-hidden p-6 data-[physics=on]:touch-none sm:h-[85svh] sm:grid-cols-[repeat(auto-fill,minmax(130px,1fr))] sm:gap-10 sm:p-10"
-    >
-      {/* The wall's surface fades into the room, so it has no visible edge */}
+    <>
       <div
-        aria-hidden="true"
-        className="wall-surface fade-edges pointer-events-none absolute inset-0 -z-10"
-      />
-      {books.map((book) => (
-        <Link
-          key={book.isbn}
-          href={book.href}
-          data-wall-book=""
-          draggable={false}
-          aria-label={`${book.title} by ${book.author}`}
-          onClick={(event) => {
-            // Mouse and touch clicks are handled by the wall, so a drag never opens a book.
-            // Keyboard presses (detail 0) follow the link as normal.
-            if (
-              event.detail > 0 &&
-              event.currentTarget.closest('[data-physics="on"]')
-            ) {
+        ref={containerRef}
+        data-physics="off"
+        className="group/wall relative isolate grid h-[70svh] max-h-[900px] min-h-[480px] grid-cols-[repeat(auto-fill,minmax(96px,1fr))] content-center justify-items-center gap-6 overflow-hidden p-6 data-[physics=on]:touch-none sm:h-[85svh] sm:grid-cols-[repeat(auto-fill,minmax(130px,1fr))] sm:gap-10 sm:p-10"
+      >
+        {/* The wall's surface fades into the room, so it has no visible edge */}
+        <div
+          aria-hidden="true"
+          className="wall-surface fade-edges pointer-events-none absolute inset-0 -z-10"
+        />
+        {books.map((book) => (
+          <Link
+            key={book.isbn}
+            href={book.mention.href}
+            data-wall-book={book.isbn}
+            draggable={false}
+            aria-label={`Open ${book.title} by ${book.author}`}
+            onClick={(event) => {
               event.preventDefault();
-            }
-          }}
-          className="group/book block w-[96px] select-none will-change-transform sm:w-[130px] [&_img]:pointer-events-none group-data-[physics=on]/wall:absolute group-data-[physics=on]/wall:top-0 group-data-[physics=on]/wall:left-0 group-data-[physics=on]/wall:cursor-grab group-data-[physics=on]/wall:active:cursor-grabbing"
-        >
-          <BookCover
-            isbn={book.isbn}
-            title={book.title}
-            author={book.author}
-            available={book.coverAvailable}
-            sizes="130px"
-            className="transition-shadow duration-500 group-hover/book:shadow-[0_0_70px_-10px_rgba(232,192,122,0.65)] group-focus-visible/book:shadow-[0_0_70px_-10px_rgba(232,192,122,0.65)]"
-          />
-        </Link>
-      ))}
-    </div>
+              // With physics on, mouse and touch clicks are handled by the wall (so a drag never opens a book)
+              if (event.detail > 0 && event.currentTarget.closest('[data-physics="on"]')) return;
+              openBook(book.isbn);
+            }}
+            className="group/book block w-[96px] select-none will-change-transform sm:w-[130px] [&_img]:pointer-events-none group-data-[physics=on]/wall:absolute group-data-[physics=on]/wall:top-0 group-data-[physics=on]/wall:left-0 group-data-[physics=on]/wall:cursor-grab group-data-[physics=on]/wall:active:cursor-grabbing"
+          >
+            <BookCover
+              isbn={book.isbn}
+              title={book.title}
+              author={book.author}
+              available={book.coverAvailable}
+              sizes="130px"
+              className="transition-shadow duration-500 group-hover/book:shadow-[0_0_70px_-10px_rgba(232,192,122,0.65)] group-focus-visible/book:shadow-[0_0_70px_-10px_rgba(232,192,122,0.65)]"
+            />
+          </Link>
+        ))}
+      </div>
+
+      {openBookData && (
+        <OpenBook
+          book={openBookData}
+          books={booksByIsbn}
+          trail={trail.flatMap((isbn) => booksByIsbn.get(isbn) ?? [])}
+          getCoverState={getCoverState}
+          onFollow={handleFollow}
+          onClosed={handleClosed}
+          closeRequested={closeRequested}
+        />
+      )}
+    </>
   );
 }

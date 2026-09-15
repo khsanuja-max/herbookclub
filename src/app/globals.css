@@ -19,6 +19,12 @@
   --color-gold: #e8c07a;
   --color-ember: #8a5a2b;
 
+  /* The cream pages of a book opened on the Book Wall */
+  --color-page: #efe3cb;
+  --color-ink: #2a201b;
+  --color-ink-soft: #5b4a3d;
+  --color-sepia: #8a4a1a;
+
   /* Slow, soft motion (always used with motion-safe:) */
   --animate-drift: drift 40s ease-in-out infinite alternate;
   --animate-flicker: flicker 9s ease-in-out infinite;
@@ -198,6 +204,29 @@
   background-size:
     180px 180px,
     100% 100%;
+}
+
+/* Cream paper for the pages of an opened book, with a faint grain and darker edges */
+@utility book-paper {
+  background-color: var(--color-page);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at center, transparent 60%, rgb(120 80 40 / 0.16));
+  background-size:
+    180px 180px,
+    100% 100%;
+}
+
+/* The soft shadow down the middle of an open book */
+@utility page-crease {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgb(80 50 25 / 0.16) 38%,
+    rgb(60 35 15 / 0.38) 50%,
+    rgb(80 50 25 / 0.16) 62%,
+    transparent
+  );
 }
 
 @utility shelf-scroll {

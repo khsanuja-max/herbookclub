@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { AmberRule } from "@/components/AmberRule";
 import { Lamplight } from "@/components/Lamplight";
 import { MoodGrid } from "@/components/MoodGrid";
 import { PageHero } from "@/components/PageHero";
 import { getMoods } from "@/lib/content";
 import { getPhoto } from "@/lib/photos";
+import { textLink } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Book Finder",
@@ -30,6 +33,18 @@ export default async function BookFinderPage() {
         <Lamplight glow="center" />
         <div className="reveal page-container">
           <MoodGrid moods={moods} />
+        </div>
+      </section>
+
+      <section className="relative isolate pb-24 lg:pb-36">
+        <div className="reveal page-container text-center">
+          <AmberRule align="center" className="mx-auto w-40" />
+          <p className="mt-10 font-serif text-3xl italic text-glow-soft sm:text-4xl">
+            Not sure how you feel?
+          </p>
+          <Link href="/book-wall" className={`${textLink} mt-6`}>
+            Wander the Book Wall instead →
+          </Link>
         </div>
       </section>
     </>

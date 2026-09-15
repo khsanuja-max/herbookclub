@@ -1,24 +1,17 @@
 import type { Metadata } from "next";
 import { AmberRule } from "@/components/AmberRule";
-import { BookWall, type WallItem } from "@/components/BookWall";
+import { BookWall } from "@/components/BookWall";
 import { Lamplight } from "@/components/Lamplight";
 import { getWallBooks } from "@/lib/wall";
 
 export const metadata: Metadata = {
   title: "The Book Wall",
   description:
-    "Every book from Roshi’s videos and monthly picks on one wall. Pick them up, move them around and find your next read.",
+    "Every book from Roshi’s videos and monthly picks on one wall. Pick them up, move them around and open one to find your next read.",
 };
 
 export default async function BookWallPage() {
   const books = await getWallBooks();
-  const items: WallItem[] = books.map((book) => ({
-    isbn: book.isbn,
-    title: book.title,
-    author: book.author,
-    coverAvailable: book.coverAvailable,
-    href: book.mention.href,
-  }));
 
   return (
     <>
@@ -38,7 +31,7 @@ export default async function BookWallPage() {
               room.
             </p>
             <p className="mt-4 text-glow-soft">
-              Click or tap a cover to see where Roshi talks about it.
+              Click or tap a cover to open it.
             </p>
             <AmberRule className="mt-8 w-40" />
           </div>
@@ -51,7 +44,7 @@ export default async function BookWallPage() {
         className="relative isolate pb-24 lg:pb-36"
       >
         <div className="page-container">
-          <BookWall books={items} />
+          <BookWall books={books} />
           <p className="mt-6 text-center font-sc text-base lowercase tracking-[0.2em] text-glow-soft">
             {books.length} books on the wall
           </p>

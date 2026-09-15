@@ -25,6 +25,8 @@ export type VideoBook = {
   author: string;
   isbn: string;
   note: string;
+  /** Optional longer review, one paragraph per line. Shown when the book is opened on the Book Wall. */
+  review?: string[];
 };
 
 export type VideoCompanion = {
