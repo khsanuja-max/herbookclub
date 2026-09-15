@@ -32,7 +32,7 @@ export function PageHero({
         style={{ objectPosition: focus }}
       />
       <div
-        className="absolute inset-0 -z-10 bg-linear-to-t from-night/90 via-night/45 to-night/10"
+        className="absolute inset-0 -z-10 bg-linear-to-t from-night/90 via-night/60 to-night/15"
         aria-hidden="true"
       />
 
