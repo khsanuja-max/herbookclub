@@ -179,6 +179,16 @@ Page: `herbookclub.vercel.app/book-wall`
 
 **You don't need to add books to the wall.** Every book from This Month's Pick and your video pages appears on it automatically.
 
+### Book previews
+
+**Nothing is needed from you.** Each time the site is built, it asks Google Books whether each book has a preview that can be shown on other websites. When it does, visitors can read that preview inside the book on the wall; when it doesn't, the book opens to your words about it instead.
+
+A few things worth knowing:
+
+- Previews belong to a particular **edition**. If you know one edition has a preview (you can check on books.google.com — look for a **Preview** or **Read sample** button), use that edition's ISBN in your content file.
+- Google decides previews partly by **country**, so a preview can be available to some visitors and not others. Anyone who can't see it gets a "Read on Google Books" link instead.
+- If Google is unavailable while the site is being built, the site still builds; those books just open to your words that time.
+
 ### "If you loved this, try…" connections
 
 File: **`content/connections.json`**

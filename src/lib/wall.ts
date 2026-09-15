@@ -1,10 +1,12 @@
 // The Book Wall: every book from this month's pick and the video pages, with no repeats,
-// plus the "if you loved this, try…" connections from content/connections.json.
+// plus the "if you loved this, try…" connections from content/connections.json
+// and whether Google Books has a preview of each one.
 
 import { cache } from "react";
 import connectionsData from "../../content/connections.json";
 import { bookAnchor, hasCover } from "./books";
 import { getThisMonthsPick, getVideos } from "./content";
+import { getBookPreview, type BookPreview } from "./googleBooks";
 
 type ConnectionsFile = Record<string, { isbn: string; why: string }[]>;
 
@@ -24,10 +26,12 @@ export type WallBook = {
   /** Where Roshi talks about the book on the site */
   mention: { label: string; href: string };
   coverAvailable: boolean;
+  /** Google Books preview, checked when the site is built */
+  preview: { hasPreview: boolean; volumeId: string | null };
   connections: WallConnection[];
 };
 
-type BaseBook = Omit<WallBook, "coverAvailable" | "connections">;
+type BaseBook = Omit<WallBook, "coverAvailable" | "preview" | "connections">;
 
 /** Stops the build with a clear message if connections.json mentions a book that isn't on the wall. */
 function checkConnections(
@@ -55,6 +59,43 @@ function checkConnections(
       .join(", ");
     throw new Error(
       `content/connections.json has a problem:\n- ${problems.join("\n- ")}\nBooks on the wall: ${onTheWall}`,
+    );
+  }
+}
+
+let previewSummaryLogged = false;
+
+/** Prints the Google Books preview results once in the build output. */
+function logPreviewSummary(books: BaseBook[], previews: BookPreview[]) {
+  if (previewSummaryLogged) return;
+  previewSummaryLogged = true;
+
+  const count = previews.filter((preview) => preview.hasPreview).length;
+  const countries = [
+    ...new Set(previews.map((preview) => preview.country).filter(Boolean)),
+  ];
+  const lines = books.map((book, index) => {
+    const preview = previews[index];
+    if (preview.hasPreview) {
+      return `  ✓ ${book.title} (${book.isbn}) — preview, volume ${preview.volumeId}`;
+    }
+    if (preview.problem) {
+      return `  ! ${book.title} (${book.isbn}) — no preview (${preview.problem})`;
+    }
+    return `  · ${book.title} (${book.isbn}) — no preview`;
+  });
+
+  console.log(
+    [
+      `Google Books previews: ${count} of ${books.length} books` +
+        (countries.length ? ` (checked from ${countries.join(", ")})` : ""),
+      ...lines,
+    ].join("\n"),
+  );
+
+  if (previews.some((preview) => preview.problem)) {
+    console.warn(
+      "Google Books: some checks could not be completed, so those books will open with Roshi's words instead of a preview.",
     );
   }
 }
@@ -92,11 +133,19 @@ export const getWallBooks = cache(async (): Promise<WallBook[]> => {
   checkConnections(connections, books);
 
   const list = [...books.values()];
-  const coverFlags = await Promise.all(list.map((book) => hasCover(book.isbn)));
+  const [coverFlags, previews] = await Promise.all([
+    Promise.all(list.map((book) => hasCover(book.isbn))),
+    Promise.all(list.map((book) => getBookPreview(book.isbn))),
+  ]);
+  logPreviewSummary(list, previews);
 
   return list.map((book, index) => ({
     ...book,
     coverAvailable: coverFlags[index],
+    preview: {
+      hasPreview: previews[index].hasPreview,
+      volumeId: previews[index].volumeId,
+    },
     connections: (connections[book.isbn] ?? []).map((link) => {
       const target = books.get(link.isbn)!;
       return {

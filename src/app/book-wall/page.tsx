@@ -45,7 +45,11 @@ export default async function BookWallPage() {
         </div>
       </section>
 
-      <section aria-label="The Book Wall" className="relative isolate pb-24 lg:pb-36">
+      <section
+        aria-label="The Book Wall"
+        data-book-previews={books.filter((book) => book.preview.hasPreview).length}
+        className="relative isolate pb-24 lg:pb-36"
+      >
         <div className="page-container">
           <BookWall books={items} />
           <p className="mt-6 text-center font-sc text-base lowercase tracking-[0.2em] text-glow-soft">
