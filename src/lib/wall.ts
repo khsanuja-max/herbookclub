@@ -33,6 +33,39 @@ export type WallBook = {
 
 type BaseBook = Omit<WallBook, "coverAvailable" | "preview" | "connections">;
 
+/** Every book on the wall, in order, with no repeats: this month's pick first, then the videos. */
+const collectBooks = cache(async (): Promise<Map<string, BaseBook>> => {
+  const [pick, videos] = await Promise.all([getThisMonthsPick(), getVideos()]);
+  const books = new Map<string, BaseBook>();
+
+  books.set(pick.isbn, {
+    isbn: pick.isbn,
+    title: pick.title,
+    author: pick.author,
+    note: pick.headline,
+    mention: { label: "This month’s pick", href: "/this-months-pick" },
+  });
+
+  // Videos are newest first, so each book points to the newest video that mentions it.
+  for (const video of videos) {
+    for (const book of video.books) {
+      if (books.has(book.isbn)) continue;
+      books.set(book.isbn, {
+        isbn: book.isbn,
+        title: book.title,
+        author: book.author,
+        note: book.note,
+        mention: {
+          label: video.title,
+          href: `/videos/${video.slug}#${bookAnchor(book.isbn)}`,
+        },
+      });
+    }
+  }
+
+  return books;
+});
+
 /** Stops the build with a clear message if connections.json mentions a book that isn't on the wall. */
 function checkConnections(
   connections: ConnectionsFile,
@@ -100,34 +133,9 @@ function logPreviewSummary(books: BaseBook[], previews: BookPreview[]) {
   }
 }
 
+/** Everything the Book Wall page needs, including Google Books previews and connections. */
 export const getWallBooks = cache(async (): Promise<WallBook[]> => {
-  const [pick, videos] = await Promise.all([getThisMonthsPick(), getVideos()]);
-  const books = new Map<string, BaseBook>();
-
-  books.set(pick.isbn, {
-    isbn: pick.isbn,
-    title: pick.title,
-    author: pick.author,
-    note: pick.headline,
-    mention: { label: "This month’s pick", href: "/this-months-pick" },
-  });
-
-  // Videos are newest first, so each book points to the newest video that mentions it.
-  for (const video of videos) {
-    for (const book of video.books) {
-      if (books.has(book.isbn)) continue;
-      books.set(book.isbn, {
-        isbn: book.isbn,
-        title: book.title,
-        author: book.author,
-        note: book.note,
-        mention: {
-          label: video.title,
-          href: `/videos/${video.slug}#${bookAnchor(book.isbn)}`,
-        },
-      });
-    }
-  }
+  const books = await collectBooks();
 
   const connections: ConnectionsFile = connectionsData;
   checkConnections(connections, books);
@@ -157,3 +165,23 @@ export const getWallBooks = cache(async (): Promise<WallBook[]> => {
     }),
   }));
 });
+
+/**
+ * A light summary of the wall for teasers elsewhere on the site (like the home page):
+ * how many books it holds and a few covers. Skips the Google Books checks.
+ */
+export async function getWallTeaser(coverCount: number) {
+  const books = [...(await collectBooks()).values()];
+  const shown = books.slice(0, coverCount);
+  const coverFlags = await Promise.all(shown.map((book) => hasCover(book.isbn)));
+
+  return {
+    total: books.length,
+    covers: shown.map((book, index) => ({
+      isbn: book.isbn,
+      title: book.title,
+      author: book.author,
+      coverAvailable: coverFlags[index],
+    })),
+  };
+}

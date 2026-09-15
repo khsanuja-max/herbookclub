@@ -21,8 +21,20 @@ import {
 import { getPhoto } from "@/lib/photos";
 import { site } from "@/lib/site";
 import { primaryButton, textLink } from "@/lib/styles";
+import { getWallTeaser } from "@/lib/wall";
 
 const SHELF_SIZE = 8;
+
+/** Where each cover sits in the Book Wall teaser: position, tilt, and how far it drifts on hover. */
+const TEASER_LAYOUT = [
+  { left: "3%", top: "20%", rotate: -9, dx: -10, dy: -6 },
+  { left: "19%", top: "3%", rotate: 6, dx: -6, dy: -12 },
+  { left: "38%", top: "22%", rotate: -4, dx: 0, dy: -8 },
+  { left: "56%", top: "5%", rotate: 8, dx: 8, dy: -12 },
+  { left: "73%", top: "24%", rotate: -7, dx: 12, dy: -4 },
+  { left: "12%", top: "50%", rotate: 5, dx: -10, dy: 10 },
+  { left: "50%", top: "52%", rotate: -10, dx: 8, dy: 12 },
+];
 
 /**
  * Books from the video pages for "Recently on the shelf", with no repeats.
@@ -50,11 +62,12 @@ function buildShelf(videos: VideoCompanion[], latestIsbns: Set<string>) {
 }
 
 export default async function Home() {
-  const [pick, videos, moods, about] = await Promise.all([
+  const [pick, videos, moods, about, wall] = await Promise.all([
     getThisMonthsPick(),
     getVideos(),
     getMoods(),
     getAbout(),
+    getWallTeaser(TEASER_LAYOUT.length),
   ]);
 
   const latest = videos.at(0);
@@ -231,6 +244,67 @@ export default async function Home() {
           <figcaption className="section-label mt-10">Emily Dickinson</figcaption>
           <AmberRule align="center" className="mx-auto mt-12 w-40" />
         </figure>
+      </section>
+
+      {/* The Book Wall teaser */}
+      <section id="book-wall" className="relative isolate overflow-hidden py-24 lg:py-36">
+        <Lamplight glow="left" wash />
+        <div className="reveal page-container grid items-center gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-24">
+          <div>
+            <p className="section-label">Every book, one wall</p>
+            <h2 className="mt-5 font-serif text-5xl font-semibold leading-[0.95] sm:text-7xl lg:text-8xl">
+              The Book Wall
+            </h2>
+            <p className="mt-6 max-w-2xl font-serif text-2xl italic leading-snug text-glow-soft lg:text-3xl">
+              All {wall.total} books from Roshi’s videos and picks on one wall.
+              Pick them up, push them around and see where they land.
+            </p>
+            <AmberRule className="mt-10 w-40" />
+            <Link href="/book-wall" className={`${primaryButton} mt-12`}>
+              Open the Book Wall
+            </Link>
+          </div>
+
+          <Link
+            href="/book-wall"
+            tabIndex={-1}
+            aria-hidden="true"
+            className="group relative isolate mx-auto block aspect-[4/3] w-full max-w-2xl"
+          >
+            <div
+              aria-hidden="true"
+              className="wall-surface fade-edges pointer-events-none absolute inset-0 -z-10"
+            />
+            {wall.covers.map((book, index) => {
+              const spot = TEASER_LAYOUT[index];
+              return (
+                <div
+                  key={book.isbn}
+                  className="absolute w-[24%] [transform:rotate(var(--tilt))] transition-transform duration-700 ease-out group-hover:[transform:translate(var(--dx),var(--dy))_rotate(var(--tilt))] motion-reduce:transition-none"
+                  style={
+                    {
+                      left: spot.left,
+                      top: spot.top,
+                      // The first cover (this month's pick) sits on top of the pile
+                      zIndex: wall.covers.length - index,
+                      "--tilt": `${spot.rotate}deg`,
+                      "--dx": `${spot.dx}px`,
+                      "--dy": `${spot.dy}px`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <BookCover
+                    isbn={book.isbn}
+                    title={book.title}
+                    author={book.author}
+                    available={book.coverAvailable}
+                    sizes="(min-width: 1024px) 170px, 24vw"
+                  />
+                </div>
+              );
+            })}
+          </Link>
+        </div>
       </section>
 
       {/* 4. Latest video */}
