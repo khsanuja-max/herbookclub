@@ -79,6 +79,20 @@ const AT_REST = "translate(0px, 0px) rotate(0deg) scale(1)";
 const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/**
+ * Fades the cover's front and back faces. Never fade the cover element itself:
+ * animating the opacity of a 3D element flattens it, so its front shows through from behind.
+ */
+function fadeCoverFaces(
+  cover: HTMLElement,
+  from: number,
+  to: number,
+  options: KeyframeAnimationOptions,
+) {
+  const faces = Array.from(cover.children) as HTMLElement[];
+  return Promise.all(faces.map((face) => play(face, [{ opacity: from }, { opacity: to }], options)));
+}
+
 /** Runs a Web Animation, keeps its end state, and resolves when it finishes (or is interrupted). */
 async function play(
   element: HTMLElement,
@@ -100,7 +114,8 @@ function BookPages({ book, singlePage }: { book: WallBook; singlePage: boolean }
 
   if (book.preview.hasPreview && !viewerFailed) {
     return (
-      <div className="absolute inset-0 py-5 pr-5 pl-7 sm:py-7 sm:pr-7 sm:pl-9">
+      // Extra room at the top keeps Google's toolbar clear of the ribbon
+      <div className="absolute inset-0 pt-14 pr-5 pb-5 pl-7 sm:pr-7 sm:pb-7 sm:pl-9">
         <GoogleBooksViewer isbn={book.isbn} onFail={() => setViewerFailed(true)} />
       </div>
     );
@@ -296,12 +311,10 @@ export function OpenBook({
       play(e.content, [{ opacity: 1 }, { opacity: 0 }], { duration: t.fadeOut }),
       play(e.column, [{ opacity: 1 }, { opacity: 0 }], { duration: t.fadeOut }),
       play(e.ribbon, [{ opacity: 1 }, { opacity: 0 }], { duration: t.fadeOut }),
+      fadeCoverFaces(e.cover, 0, 1, { duration: t.shutDelay }),
       play(
         e.cover,
-        [
-          { opacity: 1, transform: `rotateY(${-t.flipAngle}deg)` },
-          { opacity: 1, transform: "rotateY(0deg)" },
-        ],
+        [{ transform: `rotateY(${-t.flipAngle}deg)` }, { transform: "rotateY(0deg)" }],
         { delay: t.shutDelay, duration: t.shut, easing: "cubic-bezier(0.45, 0, 0.55, 1)" },
       ),
       play(
@@ -365,7 +378,8 @@ export function OpenBook({
         return;
       }
 
-      Object.assign(e.cover.style, { opacity: "1", transform: "rotateY(0deg)" });
+      e.cover.style.transform = "rotateY(0deg)";
+      for (const face of Array.from(e.cover.children) as HTMLElement[]) face.style.opacity = "1";
       Object.assign(e.spread.style, { opacity: "0", clipPath: halfClip });
       Object.assign(e.content.style, { opacity: "0" });
       Object.assign(e.column.style, { opacity: "0" });
@@ -442,7 +456,7 @@ export function OpenBook({
       if (token !== runRef.current) return;
 
       // The swung cover gives way to the flat pages, with its edge still showing at the left
-      await play(e.cover, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 });
+      await fadeCoverFaces(e.cover, 1, 0, { duration: 200 });
       if (token === runRef.current) finish();
     },
     [singlePage, wallTransform],
@@ -472,12 +486,10 @@ export function OpenBook({
         play(e.content, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }),
         play(e.column, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }),
         play(e.ribbon, [{ opacity: 1 }, { opacity: 0 }], { duration: 200 }),
+        fadeCoverFaces(e.cover, 0, 1, { duration: 200 }),
         play(
           e.cover,
-          [
-            { opacity: 1, transform: `rotateY(${-t.flipAngle}deg)` },
-            { opacity: 1, transform: "rotateY(0deg)" },
-          ],
+          [{ transform: `rotateY(${-t.flipAngle}deg)` }, { transform: "rotateY(0deg)" }],
           { delay: 200, duration: shut, easing: "cubic-bezier(0.45, 0, 0.55, 1)" },
         ),
         play(
@@ -550,7 +562,7 @@ export function OpenBook({
       <div
         ref={backdropRef}
         aria-hidden="true"
-        className="fixed inset-0 bg-night/75 backdrop-blur-md"
+        className="fixed inset-0 bg-night/65 backdrop-blur-md"
         style={{ opacity: 0 }}
       />
 

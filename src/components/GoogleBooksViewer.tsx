@@ -44,7 +44,15 @@ function loadGoogleBooks(): Promise<GoogleBooksApi> {
           return;
         }
         google.books.load();
-        google.books.setOnLoadCallback(() => resolve(google));
+        // Google's setOnLoadCallback doesn't fire once the page has finished loading,
+        // so wait for the viewer itself to appear instead
+        const started = Date.now();
+        const check = () => {
+          if (typeof google.books.DefaultViewer === "function") resolve(google);
+          else if (Date.now() - started > TIMEOUT_MS) reject(new Error("Google Books viewer timed out"));
+          else window.setTimeout(check, 100);
+        };
+        check();
       };
       script.onerror = () => reject(new Error("Google Books viewer failed to load"));
       document.head.appendChild(script);

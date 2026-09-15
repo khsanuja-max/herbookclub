@@ -97,11 +97,11 @@ export default async function Home() {
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/50 to-night/50"
+          className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/35 to-night/35"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 -z-10 bg-linear-to-r from-night/75 via-night/25 to-transparent"
+          className="absolute inset-0 -z-10 bg-linear-to-r from-night/60 via-night/15 to-transparent"
           aria-hidden="true"
         />
         <div

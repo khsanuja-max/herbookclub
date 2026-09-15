@@ -6,13 +6,13 @@
 */
 @theme {
   /* Backgrounds, darkest to lightest */
-  --color-night: #120d0a;
-  --color-hearth: #1c1410;
-  --color-smoke: #2a1f18;
+  --color-night: #211813;
+  --color-hearth: #2c211a;
+  --color-smoke: #3c2d23;
 
   /* Text */
-  --color-glow: #f3e6c8;
-  --color-glow-soft: #cbb99a;
+  --color-glow: #f6ead0;
+  --color-glow-soft: #d8c6a6;
 
   /* Lamplight accents */
   --color-amber: #d9964a;
@@ -135,8 +135,8 @@
 @utility lamp-glow {
   background: radial-gradient(
     closest-side,
-    rgb(217 150 74 / 0.18),
-    rgb(138 90 43 / 0.08) 50%,
+    rgb(217 150 74 / 0.24),
+    rgb(138 90 43 / 0.11) 50%,
     transparent
   );
 }
@@ -200,7 +200,7 @@
 @utility wall-surface {
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.86 0 0 0 0 0.7 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse closest-side, rgb(42 31 24 / 0.9), transparent);
+    radial-gradient(ellipse closest-side, rgb(60 45 35 / 0.9), transparent);
   background-size:
     180px 180px,
     100% 100%;

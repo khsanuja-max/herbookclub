@@ -37,7 +37,7 @@ export function MoodTile({
           placeholder="blur"
           className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105 motion-reduce:transition-none"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-night via-night/60 to-night/10" />
+        <div className="absolute inset-0 bg-linear-to-t from-night via-night/45 to-night/10" />
       </div>
       <span className="font-serif text-2xl font-semibold leading-[1.05] text-balance transition-colors group-hover:text-gold sm:text-3xl xl:text-4xl">
         {label}

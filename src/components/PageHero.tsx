@@ -36,11 +36,11 @@ export function PageHero({
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/60 to-night/40"
+        className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/45 to-night/25"
         aria-hidden="true"
       />
       <div
-        className="absolute inset-0 -z-10 bg-linear-to-r from-night/80 via-night/30 to-transparent"
+        className="absolute inset-0 -z-10 bg-linear-to-r from-night/65 via-night/20 to-transparent"
         aria-hidden="true"
       />
       <div
