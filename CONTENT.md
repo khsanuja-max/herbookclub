@@ -28,10 +28,10 @@ File: **`content/this-months-pick.json`**
 ```json
 {
   "month": "September 2026",
-  "title": "The House in the Cerulean Sea",
-  "author": "TJ Klune",
-  "isbn": "9781250217318",
-  "headline": "A warm blanket of a book: found family, gentle magic and a lot of heart.",
+  "title": "Vera Wong's Unsolicited Advice for Murderers",
+  "author": "Jesse Q. Sutanto",
+  "isbn": "9780593546178",
+  "headline": "A cosy, laugh-out-loud mystery with the most gloriously nosy detective I've ever met.",
   "review": [
     "First paragraph of your review.",
     "Second paragraph.",
@@ -199,9 +199,9 @@ Each book is listed by its ISBN, followed by the books it leads to, each with a 
 
 ```json
 {
-  "9781250217318": [
-    { "isbn": "9781035042432", "why": "Another warm found family, gathered around a little coffee shop." },
-    { "isbn": "9780061478789", "why": "Gentle magic, a chaotic household and plenty of heart." }
+  "9780593546178": [
+    { "isbn": "9781035042432", "why": "Another little shop that becomes the heart of an unlikely family." },
+    { "isbn": "9781501160837", "why": "A bungled crime that brings strangers together, told with warmth and humour." }
   ],
   "9780385534635": [
     { "isbn": "9780061478789", "why": "Another world of enchantment you'll want to move into." }
@@ -211,7 +211,7 @@ Each book is listed by its ISBN, followed by the books it leads to, each with a 
 
 | Part | What it means |
 | --- | --- |
-| `"9781250217318": [ … ]` | The book these connections belong to (here, *The House in the Cerulean Sea*). |
+| `"9780593546178": [ … ]` | The book these connections belong to (here, *Vera Wong's Unsolicited Advice for Murderers*). |
 | `"isbn"` | The book to suggest next. |
 | `"why"` | One line, in your words, about why a reader of the first book will love it. |
 

@@ -1,26 +1,25 @@
 {
-  "9781250217318": [
-    { "isbn": "9781035042432", "why": "Another warm found family, gathered around a little coffee shop." },
-    { "isbn": "9780061478789", "why": "Gentle magic, a chaotic household and plenty of heart." },
-    { "isbn": "9781501160837", "why": "Strangers who become family, full of humour and kindness." }
+  "9780593546178": [
+    { "isbn": "9781035042432", "why": "Another little shop that becomes the heart of an unlikely family." },
+    { "isbn": "9781501160837", "why": "A bungled crime that brings strangers together, told with warmth and humour." },
+    { "isbn": "9781444775815", "why": "Another stubborn, meddling hero who pulls a whole community together." }
   ],
   "9780385534635": [
     { "isbn": "9780061478789", "why": "Another world of enchantment you'll want to move into." },
     { "isbn": "9780525559474", "why": "A dreamlike story about the lives we might have lived." }
   ],
   "9780061478789": [
-    { "isbn": "9781250217318", "why": "Magic, misfits and a house full of love." },
     { "isbn": "9780385534635", "why": "More magic, cast with a slower, dreamier spell." },
     { "isbn": "9781035042432", "why": "Cosy fantasy where the real adventure is making a home." }
   ],
   "9781035042432": [
-    { "isbn": "9781250217318", "why": "The same warm hug of a book, with found family at its heart." },
+    { "isbn": "9780593546178", "why": "Another cosy little shop that turns strangers into family." },
     { "isbn": "9780061478789", "why": "A classic cosy fantasy full of charm and humour." },
     { "isbn": "9781444775815", "why": "Another fresh start where a community slowly gathers round." }
   ],
   "9781501160837": [
     { "isbn": "9781444775815", "why": "Backman again: laughter first, then tears." },
-    { "isbn": "9781250217318", "why": "Kindness towards unlikely people, told with a big heart." },
+    { "isbn": "9780593546178", "why": "Another funny, tender story where a crime brings unlikely people together." },
     { "isbn": "9780525559474", "why": "Hope for anyone who has ever felt stuck." }
   ],
   "9780525559474": [
