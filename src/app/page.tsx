@@ -1,16 +1,82 @@
+import Image from "next/image";
+import Link from "next/link";
+import heroPhoto from "@/assets/photos/hero-fairy-lights-book.jpg";
+import { site } from "@/lib/site";
+
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-      <p className="font-sans text-sm uppercase tracking-[0.3em] text-terracotta">
-        Coming soon
-      </p>
-      <h1 className="mt-6 font-serif text-5xl font-semibold leading-tight text-ink sm:text-7xl">
-        Her Book Club
-      </h1>
-      <p className="mt-6 max-w-md font-serif text-xl italic text-ink-soft sm:text-2xl">
-        Pull up a chair — the shelves are being dusted and the kettle is on.
-      </p>
-      <div className="mt-10 h-px w-24 bg-terracotta/40" aria-hidden="true" />
-    </main>
+    <>
+      <section className="relative isolate flex h-[min(88svh,820px)] min-h-[560px] items-end overflow-hidden bg-night">
+        <Image
+          src={heroPhoto}
+          alt="An open book glowing under a tangle of fairy lights on a bed"
+          fill
+          sizes="100vw"
+          placeholder="blur"
+          loading="eager"
+          fetchPriority="high"
+          className="-z-10 object-cover object-[center_45%]"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/55 to-night/10"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-linear-to-r from-night/70 via-night/25 to-transparent"
+          aria-hidden="true"
+        />
+
+        <div className="mx-auto w-full max-w-6xl px-6 pb-16 sm:pb-24">
+          <p className="text-xs uppercase tracking-[0.3em] text-lamplight sm:text-sm">
+            Book club · Video picks
+            <span className="hidden sm:inline"> · Reading nook</span>
+          </p>
+          <h1 className="mt-4 max-w-3xl font-serif text-6xl font-semibold leading-[0.95] text-balance text-glow sm:text-8xl">
+            {site.name}
+          </h1>
+          <p className="mt-6 max-w-xl font-serif text-2xl italic text-glow/85 sm:text-3xl">
+            {site.tagline}
+          </p>
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/this-months-pick"
+              className="rounded-full bg-glow px-7 py-3.5 text-center font-semibold text-night transition-colors hover:bg-white"
+            >
+              This month’s pick
+            </Link>
+            <Link
+              href="/book-finder"
+              className="rounded-full border border-glow/60 px-7 py-3.5 text-center font-semibold text-glow transition-colors hover:bg-glow/10"
+            >
+              Find a book for your mood
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-6 py-20 sm:py-28">
+        <h2 className="font-serif text-4xl font-semibold sm:text-5xl">
+          Pull up a chair
+        </h2>
+        <p className="mt-4 max-w-2xl text-lg text-ink-soft">
+          Put the kettle on and stay a while. Here you’ll find the book the club
+          is reading this month, every book from Roshi’s videos, and a finder
+          that matches books to your mood.
+        </p>
+
+        <ul className="mt-12 grid gap-10 sm:grid-cols-3">
+          {site.nav.slice(0, 3).map((item) => (
+            <li key={item.href} className="border-t border-ink/15 pt-6">
+              <Link href={item.href} className="group block">
+                <h3 className="font-serif text-2xl font-semibold group-hover:text-ember">
+                  {item.label} →
+                </h3>
+                <p className="mt-2 text-ink-soft">{item.blurb}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   );
 }

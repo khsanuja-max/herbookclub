@@ -1,4 +1,4 @@
-# Her Book Club
+# Roshi's Book Club
 
 A cosy book club website — monthly picks, video companion pages, and a mood-based book finder.
 
@@ -19,10 +19,19 @@ npm run dev
 
 Then open http://localhost:3000.
 
+## Where things live
+
+| Folder / file              | What it is                                      |
+| -------------------------- | ----------------------------------------------- |
+| `src/lib/site.ts`          | Site name, tagline, menu links, YouTube link    |
+| `src/app/`                 | One folder per page                             |
+| `src/components/`          | Header, footer and shared building blocks       |
+| `src/assets/photos/`       | Background photos (credits in `CREDITS.md`)     |
+
 ## Useful commands
 
-| Command         | What it does                              |
-| --------------- | ----------------------------------------- |
-| `npm run dev`   | Start the local development server        |
+| Command         | What it does                                 |
+| --------------- | -------------------------------------------- |
+| `npm run dev`   | Start the local development server           |
 | `npm run build` | Build the production site (what Vercel runs) |
-| `npm run lint`  | Check the code for common mistakes        |
+| `npm run lint`  | Check the code for common mistakes           |

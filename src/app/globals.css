@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 /*
-  Warm, cosy bookshop palette.
-  Use these in Tailwind classes, e.g. bg-paper, text-ink, text-terracotta.
+  Lamplit reading-nook palette.
+  Use these in Tailwind classes, e.g. bg-night, text-glow, text-ember.
 */
 @theme inline {
-  --color-paper: #f7f1e8;
-  --color-parchment: #ede3d3;
-  --color-ink: #2b2320;
-  --color-ink-soft: #5c4f47;
-  --color-terracotta: #b5573a;
-  --color-sage: #7d8c6f;
+  /* Light pages */
+  --color-paper: #f6efe6;
+  --color-parchment: #ebe0d1;
+  --color-ink: #2a201b;
+  --color-ink-soft: #5e5047;
+  --color-ember: #9a5a1c;
+
+  /* Night-time photos, header and footer */
+  --color-night: #1c1613;
+  --color-glow: #f4e4c1;
+  --color-lamplight: #d9964a;
 
   --font-serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-source-sans), system-ui, sans-serif;
@@ -20,4 +25,9 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lamplight);
+  outline-offset: 3px;
 }

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const serif = Cormorant_Garamond({
@@ -15,13 +18,12 @@ const sans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://herbookclub.vercel.app"),
+  metadataBase: new URL(site.url),
   title: {
-    default: "Her Book Club",
-    template: "%s · Her Book Club",
+    default: site.name,
+    template: `%s · ${site.name}`,
   },
-  description:
-    "A cosy corner for book lovers — monthly picks, video companions, and books for every mood.",
+  description: site.description,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -30,7 +32,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${serif.variable} ${sans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <SiteHeader />
+        <main className="flex flex-1 flex-col">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
