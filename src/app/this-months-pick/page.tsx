@@ -30,7 +30,7 @@ export default async function ThisMonthsPickPage() {
         focus="center 70%"
       />
 
-      <section className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-16 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:py-24">
+      <section className="page-container grid gap-12 py-16 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16 md:py-24 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-24">
         <div className="md:sticky md:top-8 md:self-start">
           <BookCover
             isbn={pick.isbn}
@@ -75,7 +75,7 @@ export default async function ThisMonthsPickPage() {
           <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-balance sm:text-5xl">
             {pick.headline}
           </h2>
-          <div className="mt-8 max-w-prose space-y-5 text-lg leading-relaxed text-ink-soft">
+          <div className="mt-8 max-w-[80ch] space-y-5 text-lg leading-relaxed text-ink-soft lg:text-xl">
             {pick.review.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
@@ -85,14 +85,16 @@ export default async function ThisMonthsPickPage() {
       </section>
 
       <section className="bg-parchment">
-        <div className="mx-auto w-full max-w-4xl px-6 py-16 md:py-24">
-          <h2 className="font-serif text-4xl font-semibold sm:text-5xl">
-            Watch the video
-          </h2>
-          <p className="mt-3 text-lg text-ink-soft">
-            Roshi’s spoiler-free thoughts on {pick.title}.
-          </p>
-          <div className="mt-8">
+        <div className="page-container grid gap-8 py-16 md:py-24 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:items-center lg:gap-24">
+          <div>
+            <h2 className="font-serif text-4xl font-semibold sm:text-5xl lg:text-6xl">
+              Watch the video
+            </h2>
+            <p className="mt-3 text-lg text-ink-soft lg:text-xl">
+              Roshi’s spoiler-free thoughts on {pick.title}.
+            </p>
+          </div>
+          <div>
             <VideoEmbed
               videoId={pick.youtubeVideoId}
               title={`Roshi on ${pick.title}`}

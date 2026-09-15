@@ -26,15 +26,15 @@ export default function Home() {
           aria-hidden="true"
         />
 
-        <div className="mx-auto w-full max-w-6xl px-6 pb-16 sm:pb-24">
+        <div className="page-container pb-16 sm:pb-24">
           <p className="text-xs uppercase tracking-[0.3em] text-lamplight sm:text-sm">
             Book club · Video picks
             <span className="hidden sm:inline"> · Reading nook</span>
           </p>
-          <h1 className="mt-4 max-w-3xl font-serif text-6xl font-semibold leading-[0.95] text-balance text-glow sm:text-8xl">
+          <h1 className="mt-4 max-w-5xl font-serif text-6xl font-semibold leading-[0.95] text-balance text-glow sm:text-8xl lg:text-9xl">
             {site.name}
           </h1>
-          <p className="mt-6 max-w-xl font-serif text-2xl italic text-glow/85 sm:text-3xl">
+          <p className="mt-6 max-w-3xl font-serif text-2xl italic text-glow/85 sm:text-3xl lg:text-4xl">
             {site.tagline}
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -54,17 +54,19 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-6 py-20 sm:py-28">
-        <h2 className="font-serif text-4xl font-semibold sm:text-5xl">
-          Pull up a chair
-        </h2>
-        <p className="mt-4 max-w-2xl text-lg text-ink-soft">
-          Put the kettle on and stay a while. Here you’ll find the book the club
-          is reading this month, every book from Roshi’s videos, and a finder
-          that matches books to your mood.
-        </p>
+      <section className="page-container py-20 sm:py-28">
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-end lg:gap-16">
+          <h2 className="font-serif text-4xl font-semibold sm:text-5xl lg:text-7xl">
+            Pull up a chair
+          </h2>
+          <p className="text-lg text-ink-soft lg:text-xl">
+            Put the kettle on and stay a while. Here you’ll find the book the
+            club is reading this month, every book from Roshi’s videos, and a
+            finder that matches books to your mood.
+          </p>
+        </div>
 
-        <ul className="mt-12 grid gap-10 sm:grid-cols-3">
+        <ul className="mt-14 grid gap-10 sm:grid-cols-3 lg:gap-16">
           {site.nav.slice(0, 3).map((item) => (
             <li key={item.href} className="border-t border-ink/15 pt-6">
               <Link href={item.href} className="group block">

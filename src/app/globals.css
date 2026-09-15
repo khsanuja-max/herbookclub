@@ -21,6 +21,27 @@
   --font-sans: var(--font-source-sans), system-ui, sans-serif;
 }
 
+/*
+  Shared page width: uses the full screen on laptops and large monitors,
+  with side margins that grow a little on bigger screens.
+*/
+@utility page-container {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 4rem;
+  }
+  @media (width >= 96rem) {
+    padding-inline: 5rem;
+  }
+}
+
 body {
   background: var(--color-paper);
   color: var(--color-ink);

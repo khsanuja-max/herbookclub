@@ -32,7 +32,7 @@ export function VideoEmbed({ videoId, title }: VideoEmbedProps) {
           src={fairyLightsPhoto}
           alt=""
           fill
-          sizes="(min-width: 896px) 848px, 100vw"
+          sizes="(min-width: 1024px) 66vw, 100vw"
           placeholder="blur"
           className="object-cover opacity-40"
         />
@@ -70,7 +70,7 @@ export function VideoEmbed({ videoId, title }: VideoEmbedProps) {
         src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
         alt=""
         fill
-        sizes="(min-width: 896px) 848px, 100vw"
+        sizes="(min-width: 1024px) 66vw, 100vw"
         className="object-cover transition-opacity group-hover:opacity-80"
       />
       <span className="absolute inset-0 flex items-center justify-center">

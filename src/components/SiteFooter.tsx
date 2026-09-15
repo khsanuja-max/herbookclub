@@ -21,7 +21,7 @@ export function SiteFooter() {
         aria-hidden="true"
       />
 
-      <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="page-container grid gap-10 py-16 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <p className="font-serif text-3xl font-semibold">{site.name}</p>
           <p className="mt-2 font-serif text-xl italic text-glow/80">
@@ -63,7 +63,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-glow/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-sm text-glow/60 sm:flex-row sm:justify-between">
+        <div className="page-container flex flex-col gap-2 py-6 text-sm text-glow/60 sm:flex-row sm:justify-between">
           <p>
             © {year} {site.name}
           </p>

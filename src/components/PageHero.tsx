@@ -36,15 +36,17 @@ export function PageHero({
         aria-hidden="true"
       />
 
-      <div className="mx-auto w-full max-w-6xl px-6 pb-12">
+      <div className="page-container pb-12 lg:pb-16">
         <p className="text-xs uppercase tracking-[0.3em] text-lamplight">
           {eyebrow}
         </p>
-        <h1 className="mt-3 font-serif text-5xl font-semibold leading-tight text-balance text-glow sm:text-6xl">
+        <h1 className="mt-3 font-serif text-5xl font-semibold leading-tight text-balance text-glow sm:text-6xl lg:text-7xl">
           {title}
         </h1>
         {intro && (
-          <p className="mt-4 max-w-xl text-lg text-glow/85">{intro}</p>
+          <p className="mt-4 max-w-3xl text-lg text-glow/85 lg:text-xl">
+            {intro}
+          </p>
         )}
       </div>
     </section>

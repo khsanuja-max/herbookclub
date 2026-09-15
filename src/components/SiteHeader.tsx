@@ -16,7 +16,7 @@ export function SiteHeader() {
 
   return (
     <header className="bg-night text-glow">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <div className="page-container flex h-16 items-center justify-between">
         <Link
           href="/"
           onClick={closeMenu}
@@ -78,7 +78,7 @@ export function SiteHeader() {
         <nav
           id="mobile-nav"
           aria-label="Main"
-          className="border-t border-glow/10 px-6 pb-6 md:hidden"
+          className="page-container border-t border-glow/10 pb-6 md:hidden"
         >
           <ul className="flex flex-col">
             {site.nav.map((item) => {
