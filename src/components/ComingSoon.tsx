@@ -1,17 +1,19 @@
 import Link from "next/link";
+import { textLink } from "@/lib/styles";
+import { Lamplight } from "./Lamplight";
 
 export function ComingSoon({ children }: { children: React.ReactNode }) {
   return (
-    <section className="page-container py-20 lg:py-28">
-      <p className="max-w-4xl font-serif text-2xl italic text-ink-soft sm:text-3xl lg:text-4xl">
-        {children}
-      </p>
-      <Link
-        href="/"
-        className="mt-8 inline-block text-ember underline decoration-ember/30 underline-offset-4 hover:decoration-ember"
-      >
-        ← Back to the home page
-      </Link>
+    <section className="relative isolate py-24 lg:py-36">
+      <Lamplight glow="left" />
+      <div className="reveal page-container">
+        <p className="max-w-4xl font-serif text-3xl italic leading-snug text-glow-soft sm:text-4xl lg:text-5xl">
+          {children}
+        </p>
+        <Link href="/" className={`${textLink} mt-10`}>
+          ← Back to the home page
+        </Link>
+      </div>
     </section>
   );
 }

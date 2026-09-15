@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import coffeePhoto from "@/assets/photos/coffee-book-autumn-leaves.jpg";
+import { AmberRule } from "@/components/AmberRule";
 import { BookCover } from "@/components/BookCover";
 import { FindACopy } from "@/components/FindACopy";
+import { Lamplight } from "@/components/Lamplight";
 import { PageHero } from "@/components/PageHero";
 import { VideoEmbed } from "@/components/VideoEmbed";
 import { bookAnchor, hasCover } from "@/lib/books";
 import { formatDate, getVideo, getVideos } from "@/lib/content";
+import { textLink } from "@/lib/styles";
 
 // Only the videos in /content/videos exist; any other address shows "not found".
 export const dynamicParams = false;
@@ -48,63 +51,69 @@ export default async function VideoCompanionPage({
         focus="center 45%"
       />
 
-      <section className="page-container grid gap-10 py-16 md:py-24 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-24">
-        <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-ember">
-            About this video
-          </p>
-          <p className="mt-4 font-serif text-2xl leading-snug text-balance sm:text-3xl lg:text-4xl">
-            {video.summary}
-          </p>
-          <Link
-            href="/videos"
-            className="mt-8 inline-block text-ember underline decoration-ember/30 underline-offset-4 hover:decoration-ember"
-          >
-            ← All videos
-          </Link>
+      <section className="relative isolate py-20 md:py-32">
+        <Lamplight glow="left" />
+        <div className="reveal page-container grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-24">
+          <div>
+            <p className="section-label">About this video</p>
+            <p className="mt-6 font-serif text-3xl italic leading-snug text-balance sm:text-4xl lg:text-5xl">
+              {video.summary}
+            </p>
+            <AmberRule className="mt-10 w-40" />
+            <Link href="/videos" className={`${textLink} mt-10`}>
+              ← All videos
+            </Link>
+          </div>
+          <VideoEmbed videoId={video.youtubeVideoId} title={video.title} />
         </div>
-        <VideoEmbed videoId={video.youtubeVideoId} title={video.title} />
       </section>
 
-      <section className="bg-parchment">
-        <div className="page-container py-16 md:py-24">
-          <h2 className="font-serif text-4xl font-semibold sm:text-5xl lg:text-6xl">
-            The books
-          </h2>
+      <section className="relative isolate py-20 md:py-32">
+        <Lamplight glow="right" wash />
+        <div className="page-container">
+          <div className="reveal">
+            <p className="section-label">The books</p>
+            <h2 className="mt-5 font-serif text-5xl font-semibold leading-[0.95] sm:text-7xl lg:text-8xl">
+              Every book in this video
+            </h2>
+          </div>
 
-          <ol className="mt-12">
+          <ol className="mt-20 space-y-20 lg:space-y-28">
             {video.books.map((book, index) => (
-              <li
-                key={book.isbn}
-                id={bookAnchor(book.isbn)}
-                className="grid scroll-mt-8 gap-6 border-t border-ink/15 py-10 last:pb-0 sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-10 lg:grid-cols-[200px_minmax(0,1fr)_minmax(0,300px)] lg:gap-16"
-              >
-                <BookCover
-                  isbn={book.isbn}
-                  title={book.title}
-                  author={book.author}
-                  available={coverFlags[index]}
-                  sizes="(min-width: 1024px) 200px, 160px"
-                  className="w-full max-w-[160px] lg:max-w-[200px]"
-                />
+              <li key={book.isbn} id={bookAnchor(book.isbn)} className="scroll-mt-8">
+                {index > 0 && (
+                  <AmberRule align="center" className="mb-20 lg:mb-28" />
+                )}
+                <div className="reveal grid gap-10 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-12 lg:grid-cols-[220px_minmax(0,1fr)_minmax(0,280px)] lg:gap-16">
+                  <BookCover
+                    isbn={book.isbn}
+                    title={book.title}
+                    author={book.author}
+                    available={coverFlags[index]}
+                    sizes="(min-width: 1024px) 220px, 180px"
+                    className="w-full max-w-[180px] lg:max-w-[220px]"
+                  />
 
-                <div>
-                  <p className="text-xs uppercase tracking-[0.25em] text-ember">
-                    Book {index + 1} of {video.books.length}
-                  </p>
-                  <h3 className="mt-3 font-serif text-3xl font-semibold leading-tight text-balance sm:text-4xl">
-                    {book.title}
-                  </h3>
-                  <p className="mt-1 text-lg text-ink-soft">{book.author}</p>
-                  <p className="mt-5 max-w-[65ch] text-lg leading-relaxed lg:text-xl">
-                    {book.note}
-                  </p>
+                  <div>
+                    <p className="section-label">
+                      Book {index + 1} of {video.books.length}
+                    </p>
+                    <h3 className="mt-4 font-serif text-4xl font-semibold leading-[1.05] text-balance sm:text-5xl">
+                      {book.title}
+                    </h3>
+                    <p className="mt-2 font-serif text-2xl italic text-glow-soft">
+                      {book.author}
+                    </p>
+                    <p className="mt-6 max-w-[65ch] text-lg leading-relaxed text-glow/90 lg:text-xl">
+                      {book.note}
+                    </p>
+                  </div>
+
+                  <FindACopy
+                    isbn={book.isbn}
+                    className="sm:col-start-2 lg:col-start-auto"
+                  />
                 </div>
-
-                <FindACopy
-                  isbn={book.isbn}
-                  className="sm:col-start-2 lg:col-start-auto"
-                />
               </li>
             ))}
           </ol>

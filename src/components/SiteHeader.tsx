@@ -15,18 +15,18 @@ export function SiteHeader() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="bg-night text-glow">
-      <div className="page-container flex h-16 items-center justify-between">
+    <header className="relative z-20 bg-night text-glow">
+      <div className="page-container flex h-20 items-center justify-between">
         <Link
           href="/"
           onClick={closeMenu}
-          className="font-serif text-2xl font-semibold tracking-wide"
+          className="font-serif text-2xl font-semibold tracking-wide transition-colors hover:text-gold sm:text-3xl"
         >
           {site.name}
         </Link>
 
         <nav aria-label="Main" className="hidden md:block">
-          <ul className="flex items-center gap-8 text-sm tracking-wide">
+          <ul className="flex items-center gap-10">
             {site.nav.map((item) => {
               const active = isActive(pathname, item.href);
               return (
@@ -34,11 +34,11 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={
+                    className={`font-sc text-lg lowercase tracking-[0.18em] transition-colors ${
                       active
-                        ? "text-lamplight"
-                        : "text-glow/80 transition-colors hover:text-glow"
-                    }
+                        ? "text-gold underline decoration-gold/50 underline-offset-8"
+                        : "text-glow-soft hover:text-glow"
+                    }`}
                   >
                     {item.label}
                   </Link>
@@ -53,7 +53,7 @@ export function SiteHeader() {
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
-          className="flex items-center gap-2 rounded-full border border-glow/30 px-4 py-2 text-sm md:hidden"
+          className="flex items-center gap-2 rounded-full bg-hearth px-4 py-2 font-sc text-base lowercase tracking-[0.15em] text-glow md:hidden"
         >
           <svg
             width="16"
@@ -75,22 +75,18 @@ export function SiteHeader() {
       </div>
 
       {menuOpen && (
-        <nav
-          id="mobile-nav"
-          aria-label="Main"
-          className="page-container border-t border-glow/10 pb-6 md:hidden"
-        >
-          <ul className="flex flex-col">
+        <nav id="mobile-nav" aria-label="Main" className="page-container pb-8 md:hidden">
+          <ul className="flex flex-col gap-1">
             {site.nav.map((item) => {
               const active = isActive(pathname, item.href);
               return (
-                <li key={item.href} className="border-b border-glow/10">
+                <li key={item.href}>
                   <Link
                     href={item.href}
                     onClick={closeMenu}
                     aria-current={active ? "page" : undefined}
-                    className={`block py-4 font-serif text-2xl ${
-                      active ? "text-lamplight" : "text-glow"
+                    className={`block py-3 font-serif text-3xl ${
+                      active ? "text-gold" : "text-glow"
                     }`}
                   >
                     {item.label}

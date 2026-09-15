@@ -2,43 +2,46 @@ import Image from "next/image";
 import Link from "next/link";
 import candlePhoto from "@/assets/photos/candle-plaid-blanket.jpg";
 import { site } from "@/lib/site";
+import { AmberRule } from "./AmberRule";
+import { Lamplight } from "./Lamplight";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative isolate overflow-hidden bg-night text-glow">
+    <footer className="relative isolate overflow-hidden pt-10 text-glow">
+      <Lamplight glow="center" />
       <Image
         src={candlePhoto}
         alt=""
         fill
         sizes="100vw"
         placeholder="blur"
-        className="-z-10 object-cover opacity-40"
-      />
-      <div
-        className="absolute inset-0 -z-10 bg-linear-to-b from-night via-night/85 to-night/60"
-        aria-hidden="true"
+        className="fade-edges -z-10 object-cover opacity-20"
       />
 
-      <div className="page-container grid gap-10 py-16 md:grid-cols-[2fr_1fr_1fr]">
+      <div className="page-container">
+        <AmberRule align="center" />
+      </div>
+
+      <div className="page-container grid gap-12 py-20 md:grid-cols-[2fr_1fr_1fr]">
         <div>
-          <p className="font-serif text-3xl font-semibold">{site.name}</p>
-          <p className="mt-2 font-serif text-xl italic text-glow/80">
+          <p className="font-serif text-4xl font-semibold lg:text-5xl">
+            {site.name}
+          </p>
+          <p className="mt-3 font-serif text-2xl italic text-glow-soft">
             {site.tagline}
           </p>
         </div>
 
         <div>
-          <h2 className="text-xs uppercase tracking-[0.25em] text-lamplight">
-            Explore
-          </h2>
-          <ul className="mt-4 space-y-2">
+          <h2 className="section-label">Explore</h2>
+          <ul className="mt-5 space-y-3">
             {site.nav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-glow/85 transition-colors hover:text-glow"
+                  className="text-lg text-glow-soft transition-colors hover:text-gold"
                 >
                   {item.label}
                 </Link>
@@ -48,22 +51,21 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h2 className="text-xs uppercase tracking-[0.25em] text-lamplight">
-            Watch
-          </h2>
+          <h2 className="section-label">Watch</h2>
           <a
             href={site.youtubeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-block text-glow/85 transition-colors hover:text-glow"
+            className="mt-5 inline-block text-lg text-glow-soft transition-colors hover:text-gold"
           >
             Roshi on YouTube ↗
           </a>
         </div>
       </div>
 
-      <div className="border-t border-glow/10">
-        <div className="page-container flex flex-col gap-2 py-6 text-sm text-glow/60 sm:flex-row sm:justify-between">
+      <div className="page-container pb-10">
+        <AmberRule align="center" />
+        <div className="mt-6 flex flex-col gap-2 text-sm text-glow-soft sm:flex-row sm:justify-between">
           <p>
             © {year} {site.name}
           </p>
@@ -73,9 +75,18 @@ export function SiteFooter() {
               href="https://unsplash.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-glow/30 underline-offset-4 hover:text-glow"
+              className="underline decoration-glow-soft/40 underline-offset-4 hover:text-gold"
             >
               Unsplash
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://www.pexels.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-glow-soft/40 underline-offset-4 hover:text-gold"
+            >
+              Pexels
             </a>
           </p>
         </div>

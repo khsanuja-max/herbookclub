@@ -26,21 +26,23 @@ export function BookCover({
 
   return (
     <div
-      className={`relative aspect-[2/3] overflow-hidden rounded-sm bg-night shadow-[0_30px_60px_-30px_rgba(28,22,19,0.6)] ${className}`}
+      className={`relative aspect-[2/3] overflow-hidden rounded-sm bg-smoke shadow-[0_30px_70px_-25px_rgba(217,150,74,0.45)] ${className}`}
     >
       {failed ? (
         <div
           role="img"
           aria-label={`${title} by ${author}`}
-          className="flex h-full flex-col justify-between border border-glow/15 p-6 text-glow"
+          className="flex h-full flex-col justify-between bg-linear-to-b from-smoke to-hearth p-5 text-glow"
         >
-          <span className="text-[10px] uppercase tracking-[0.3em] text-lamplight">
+          <span className="font-sc text-xs lowercase tracking-[0.25em] text-amber">
             Roshi’s Book Club
           </span>
-          <span className="font-serif text-3xl font-semibold leading-tight text-balance">
+          <span className="font-serif text-2xl font-semibold leading-tight text-balance">
             {title}
           </span>
-          <span className="text-sm text-glow/75">{author}</span>
+          <span className="font-serif text-base italic text-glow-soft">
+            {author}
+          </span>
         </div>
       ) : (
         <Image

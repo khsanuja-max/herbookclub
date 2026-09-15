@@ -77,7 +77,7 @@ export function HeroVideo({
         placeholder="blur"
         loading="eager"
         fetchPriority="high"
-        className="-z-10 object-cover"
+        className="-z-10 object-cover motion-safe:animate-drift"
       />
       <video
         ref={videoRef}
@@ -86,13 +86,13 @@ export function HeroVideo({
         playsInline
         preload="none"
         aria-hidden="true"
-        className="peer absolute inset-0 -z-10 size-full object-cover opacity-0 transition-opacity duration-1000 data-[ready=true]:opacity-100"
+        className="peer absolute inset-0 -z-10 size-full object-cover opacity-0 transition-opacity duration-[1500ms] data-[ready=true]:opacity-100 motion-safe:animate-drift"
       />
       <button
         type="button"
         onClick={togglePlayback}
         aria-label={paused ? "Play background video" : "Pause background video"}
-        className="absolute right-4 bottom-4 z-10 hidden size-10 items-center justify-center rounded-full border border-glow/30 bg-night/40 text-glow backdrop-blur-sm transition-colors peer-data-[ready=true]:flex hover:bg-night/70 sm:right-6 sm:bottom-6"
+        className="absolute right-4 bottom-4 z-10 hidden size-11 items-center justify-center rounded-full bg-night/60 text-glow backdrop-blur-sm transition-colors peer-data-[ready=true]:flex hover:bg-night hover:text-gold sm:right-8 sm:bottom-8"
       >
         <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
           {paused ? (

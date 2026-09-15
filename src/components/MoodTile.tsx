@@ -23,24 +23,28 @@ export function MoodTile({
   return (
     <Link
       href={href}
-      className={`group relative isolate flex h-full flex-col justify-end overflow-hidden rounded-md bg-night p-5 text-glow sm:p-6 ${aspect}`}
+      className={`group relative isolate flex h-full flex-col justify-end p-5 text-glow sm:p-6 xl:p-8 ${aspect}`}
     >
-      <Image
-        src={photo.image}
-        alt=""
-        fill
-        sizes={sizes}
-        placeholder="blur"
-        className="-z-10 object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
-      />
-      <span
-        className="absolute inset-0 -z-10 bg-linear-to-t from-night/95 via-night/60 to-night/20"
+      <div
+        className="fade-soft absolute inset-0 -z-10 overflow-hidden"
         aria-hidden="true"
-      />
-      <span className="font-serif text-2xl font-semibold leading-tight text-balance sm:text-3xl">
+      >
+        <Image
+          src={photo.image}
+          alt=""
+          fill
+          sizes={sizes}
+          placeholder="blur"
+          className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105 motion-reduce:transition-none"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-night via-night/60 to-night/10" />
+      </div>
+      <span className="font-serif text-2xl font-semibold leading-[1.05] text-balance transition-colors group-hover:text-gold sm:text-3xl xl:text-4xl">
         {label}
       </span>
-      <span className="mt-2 text-sm text-glow/80 sm:text-base">{line}</span>
+      <span className="mt-2 font-serif text-base italic text-glow/80 sm:mt-3 sm:text-lg xl:text-xl">
+        {line}
+      </span>
     </Link>
   );
 }

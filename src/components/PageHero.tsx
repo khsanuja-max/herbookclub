@@ -19,7 +19,7 @@ export function PageHero({
   focus = "center",
 }: PageHeroProps) {
   return (
-    <section className="relative isolate flex h-[48svh] max-h-[520px] min-h-[340px] items-end overflow-hidden bg-night">
+    <section className="relative isolate flex h-[62svh] max-h-[680px] min-h-[440px] items-end overflow-hidden">
       <Image
         src={image}
         alt={alt}
@@ -28,23 +28,33 @@ export function PageHero({
         placeholder="blur"
         loading="eager"
         fetchPriority="high"
-        className="-z-10 object-cover"
+        className="-z-10 object-cover motion-safe:animate-drift"
         style={{ objectPosition: focus }}
       />
       <div
-        className="absolute inset-0 -z-10 bg-linear-to-t from-night/90 via-night/60 to-night/15"
+        className="absolute inset-0 -z-10 bg-amber/15 mix-blend-multiply"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/60 to-night/40"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 -z-10 bg-linear-to-r from-night/80 via-night/30 to-transparent"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 top-0 -z-10 h-32 bg-linear-to-b from-night to-transparent"
         aria-hidden="true"
       />
 
-      <div className="page-container pb-12 lg:pb-16">
-        <p className="text-xs uppercase tracking-[0.3em] text-lamplight">
-          {eyebrow}
-        </p>
-        <h1 className="mt-3 font-serif text-5xl font-semibold leading-tight text-balance text-glow sm:text-6xl lg:text-7xl">
+      <div className="page-container pb-14 lg:pb-20">
+        <p className="section-label">{eyebrow}</p>
+        <h1 className="mt-4 max-w-6xl font-serif text-5xl font-semibold leading-[0.95] text-balance sm:text-7xl lg:text-8xl">
           {title}
         </h1>
         {intro && (
-          <p className="mt-4 max-w-3xl text-lg text-glow/85 lg:text-xl">
+          <p className="mt-6 max-w-3xl font-serif text-2xl italic text-glow/85 sm:text-3xl">
             {intro}
           </p>
         )}
