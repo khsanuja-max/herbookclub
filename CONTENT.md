@@ -170,3 +170,45 @@ The text in this file right now is a **placeholder** — replace it with your ow
 | `photo` | The banner photo. Use one of the photo names listed in the Book Finder section above. |
 | `story` | Your story, one paragraph per line. The first paragraph is shown larger. |
 | `howItWorks` | The picture cards under "How the club works". Each has a `title`, a sentence of `text`, a `photo` name and `href` — the page it links to (`/this-months-pick`, `/videos` or `/book-finder`). |
+
+---
+
+## The Book Wall
+
+Page: `herbookclub.vercel.app/book-wall`
+
+**You don't need to add books to the wall.** Every book from This Month's Pick and your video pages appears on it automatically.
+
+### "If you loved this, try…" connections
+
+File: **`content/connections.json`**
+
+The connections in this file right now are **placeholders** — rewrite the reasons in your own words, and change the pairings however you like.
+
+Each book is listed by its ISBN, followed by the books it leads to, each with a one-line reason:
+
+```json
+{
+  "9781250217318": [
+    { "isbn": "9781035042432", "why": "Another warm found family, gathered around a little coffee shop." },
+    { "isbn": "9780061478789", "why": "Gentle magic, a chaotic household and plenty of heart." }
+  ],
+  "9780385534635": [
+    { "isbn": "9780061478789", "why": "Another world of enchantment you'll want to move into." }
+  ]
+}
+```
+
+| Part | What it means |
+| --- | --- |
+| `"9781250217318": [ … ]` | The book these connections belong to (here, *The House in the Cerulean Sea*). |
+| `"isbn"` | The book to suggest next. |
+| `"why"` | One line, in your words, about why a reader of the first book will love it. |
+
+**Good to know:**
+
+- Give each book **2 to 4** connections.
+- Both books must already be on the wall (in This Month's Pick or one of your video pages). If an ISBN isn't, the site won't update and Vercel's build log will say which ISBN is the problem and list the books that are on the wall.
+- Connections only go one way. If you want *A* to suggest *B* **and** *B* to suggest *A*, add it under both books.
+
+**To add connections for a new book:** after the last `]` for the previous book, add a comma, then a new line with the book's ISBN in quotes, a colon, and its list of connections in `[ … ]` — copy an existing one and change the details.

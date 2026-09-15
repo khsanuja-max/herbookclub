@@ -1,0 +1,55 @@
+{
+  "9781250217318": [
+    { "isbn": "9781035042432", "why": "Another warm found family, gathered around a little coffee shop." },
+    { "isbn": "9780061478789", "why": "Gentle magic, a chaotic household and plenty of heart." },
+    { "isbn": "9781501160837", "why": "Strangers who become family, full of humour and kindness." }
+  ],
+  "9780385534635": [
+    { "isbn": "9780061478789", "why": "Another world of enchantment you'll want to move into." },
+    { "isbn": "9780525559474", "why": "A dreamlike story about the lives we might have lived." }
+  ],
+  "9780061478789": [
+    { "isbn": "9781250217318", "why": "Magic, misfits and a house full of love." },
+    { "isbn": "9780385534635", "why": "More magic, cast with a slower, dreamier spell." },
+    { "isbn": "9781035042432", "why": "Cosy fantasy where the real adventure is making a home." }
+  ],
+  "9781035042432": [
+    { "isbn": "9781250217318", "why": "The same warm hug of a book, with found family at its heart." },
+    { "isbn": "9780061478789", "why": "A classic cosy fantasy full of charm and humour." },
+    { "isbn": "9781444775815", "why": "Another fresh start where a community slowly gathers round." }
+  ],
+  "9781501160837": [
+    { "isbn": "9781444775815", "why": "Backman again: laughter first, then tears." },
+    { "isbn": "9781250217318", "why": "Kindness towards unlikely people, told with a big heart." },
+    { "isbn": "9780525559474", "why": "Hope for anyone who has ever felt stuck." }
+  ],
+  "9780525559474": [
+    { "isbn": "9780593318171", "why": "Another quiet, thoughtful look at what makes a life worth living." },
+    { "isbn": "9780385534635", "why": "More magical what-ifs to get lost in." },
+    { "isbn": "9780767905923", "why": "True-life wisdom about what really matters." }
+  ],
+  "9780375842207": [
+    { "isbn": "9780593318171", "why": "Another unforgettable narrator watching the people they love." },
+    { "isbn": "9780767905923", "why": "A true story about the lessons that outlive us." },
+    { "isbn": "9781444775815", "why": "Grief and love, softened by unexpected friendship." }
+  ],
+  "9780593318171": [
+    { "isbn": "9780679731726", "why": "Ishiguro's earlier masterpiece of quiet, unspoken feeling." },
+    { "isbn": "9780375842207", "why": "An unusual narrator and a love that breaks your heart." },
+    { "isbn": "9780525559474", "why": "Big questions about life, asked gently." }
+  ],
+  "9781444775815": [
+    { "isbn": "9781501160837", "why": "More Backman: laughter first, then tears." },
+    { "isbn": "9780767905923", "why": "Another friendship that changes a life for the better." },
+    { "isbn": "9781035042432", "why": "A community that gathers round when you least expect it." }
+  ],
+  "9780767905923": [
+    { "isbn": "9781444775815", "why": "A grumpy heart softened by the people around him." },
+    { "isbn": "9780525559474", "why": "A gentle story about regret, hope and second chances." },
+    { "isbn": "9780679731726", "why": "A quiet look back at a life and the words left unsaid." }
+  ],
+  "9780679731726": [
+    { "isbn": "9780593318171", "why": "More of Ishiguro's quiet, devastating tenderness." },
+    { "isbn": "9780767905923", "why": "Another look back at a life, and what truly mattered." }
+  ]
+}
