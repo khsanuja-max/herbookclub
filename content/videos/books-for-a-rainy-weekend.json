@@ -1,0 +1,38 @@
+{
+  "title": "Five books for a rainy weekend",
+  "date": "2026-08-28",
+  "youtubeVideoId": "",
+  "summary": "Put the kettle on and let the rain do its thing. These are the books I reach for when the weekend is grey and the blanket is calling.",
+  "books": [
+    {
+      "title": "The Night Circus",
+      "author": "Erin Morgenstern",
+      "isbn": "9780385534635",
+      "note": "A mysterious circus that only opens at night, and two young magicians bound to a contest they don't fully understand. Read it for the atmosphere alone."
+    },
+    {
+      "title": "Howl's Moving Castle",
+      "author": "Diana Wynne Jones",
+      "isbn": "9780061478789",
+      "note": "Sophie is cursed into an old woman and ends up cleaning a wizard's walking castle. Funny, warm and far wiser than it looks."
+    },
+    {
+      "title": "Legends & Lattes",
+      "author": "Travis Baldree",
+      "isbn": "9781035042432",
+      "note": "An orc warrior hangs up her sword to open a coffee shop. Low stakes, found family and fresh baking. Pure comfort."
+    },
+    {
+      "title": "Anxious People",
+      "author": "Fredrik Backman",
+      "isbn": "9781501160837",
+      "note": "A bungled bank robbery turns into a hostage situation at an apartment viewing. Ridiculous, tender and quietly moving."
+    },
+    {
+      "title": "The Midnight Library",
+      "author": "Matt Haig",
+      "isbn": "9780525559474",
+      "note": "Between life and death, Nora finds a library where every book is a life she could have lived. A gentle story about regret and hope."
+    }
+  ]
+}

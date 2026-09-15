@@ -1,0 +1,38 @@
+{
+  "title": "Books that made me cry (in a good way)",
+  "date": "2026-09-10",
+  "youtubeVideoId": "",
+  "summary": "Five books that broke my heart and then quietly put it back together. Keep the tissues close and the tea warm.",
+  "books": [
+    {
+      "title": "The Book Thief",
+      "author": "Markus Zusak",
+      "isbn": "9780375842207",
+      "note": "Narrated by Death, the story of Liesel, a girl who steals books in Nazi Germany. Devastating and full of love for words."
+    },
+    {
+      "title": "Klara and the Sun",
+      "author": "Kazuo Ishiguro",
+      "isbn": "9780593318171",
+      "note": "An Artificial Friend watches the world from a shop window, then from the home of a girl who is ill. Soft, strange and heartbreaking."
+    },
+    {
+      "title": "A Man Called Ove",
+      "author": "Fredrik Backman",
+      "isbn": "9781444775815",
+      "note": "A grumpy widower's carefully ordered life is turned upside down by his new neighbours. You will laugh, and then you will sob."
+    },
+    {
+      "title": "Tuesdays with Morrie",
+      "author": "Mitch Albom",
+      "isbn": "9780767905923",
+      "note": "Mitch visits his old professor every Tuesday in the last months of his life, and they talk about what really matters. Short and life-affirming."
+    },
+    {
+      "title": "The Remains of the Day",
+      "author": "Kazuo Ishiguro",
+      "isbn": "9780679731726",
+      "note": "An English butler looks back on decades of service and the feelings he never let himself say. The quietest heartbreak on this list."
+    }
+  ]
+}

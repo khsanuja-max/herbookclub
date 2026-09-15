@@ -4,17 +4,27 @@ export function coverUrl(isbn: string) {
   return `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
 }
 
+/** The id used to link straight to a book on a video page, e.g. /videos/some-video#book-9780385534635 */
+export function bookAnchor(isbn: string) {
+  return `book-${isbn}`;
+}
+
+const coverChecks = new Map<string, Promise<boolean>>();
+
 /**
  * Checks (when the site is built) whether Open Library has a cover for this ISBN.
+ * Each ISBN is only checked once, however many pages show the book.
  * Only a definite "not found" counts as missing, so a network hiccup never hides a real cover.
  */
-export async function hasCover(isbn: string) {
-  try {
-    const res = await fetch(coverUrl(isbn));
-    return res.status !== 404;
-  } catch {
-    return true;
+export function hasCover(isbn: string) {
+  let check = coverChecks.get(isbn);
+  if (!check) {
+    check = fetch(coverUrl(isbn))
+      .then((res) => res.status !== 404)
+      .catch(() => true);
+    coverChecks.set(isbn, check);
   }
+  return check;
 }
 
 export function findCopyLinks(isbn: string) {
