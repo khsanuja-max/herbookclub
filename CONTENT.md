@@ -95,6 +95,41 @@ The file name becomes the page's web address, so use lowercase words joined by d
 
 ---
 
-## Book Finder
+## Book Finder (moods)
 
-Coming soon — instructions will be added here when the Book Finder is built.
+File: **`content/moods.json`**
+
+Each mood gets its own tile on the Book Finder page and its own page, e.g. `herbookclub.vercel.app/book-finder/comfort`. Moods appear in the same order as in the file.
+
+```json
+{
+  "moods": [
+    {
+      "id": "comfort",
+      "label": "I want to be comforted",
+      "line": "Warm, kind books that feel like a hug.",
+      "photo": "cat-asleep-on-book",
+      "books": [
+        {
+          "title": "The House in the Cerulean Sea",
+          "author": "TJ Klune",
+          "isbn": "9781250217318",
+          "reason": "Found family on a magical island, and the kindest book I know."
+        }
+      ]
+    }
+  ]
+}
+```
+
+| Line | What to put there |
+| --- | --- |
+| `id` | A short name for the web address: lowercase, words joined by dashes, no spaces (e.g. `make-me-cry`). Each mood needs a different one. |
+| `label` | The mood as visitors see it, e.g. "Make me cry". |
+| `line` | One short line under the mood name. |
+| `photo` | The background photo for the mood's tile and page. Use one of these names exactly: `cat-asleep-on-book`, `candle-plaid-blanket`, `coffee-book-autumn-leaves`, `hero-fairy-lights-book`, `hero-rain-poster`, `lamp-lit-bookshop-corner`, `steaming-mug-windowsill`. If the name is misspelled, the site won't update and Vercel's build log will list the correct names. |
+| `books` | The books for this mood. Each has a `title`, `author`, `isbn` and a one-line `reason` in your own words. The same book can appear under more than one mood. |
+
+**Nice extra:** if a book is also this month's pick or in one of your videos, its entry automatically links there.
+
+**To add a mood:** copy one whole mood block `{ … }`, put a comma between blocks, and change the details. **To remove a mood:** delete its block (and the comma before it).

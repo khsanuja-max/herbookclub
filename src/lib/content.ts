@@ -4,7 +4,9 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
+import moodsData from "../../content/moods.json";
 import thisMonthsPick from "../../content/this-months-pick.json";
+import { bookAnchor } from "./books";
 
 export type MonthlyPick = {
   month: string;
@@ -35,6 +37,23 @@ export type VideoCompanion = {
   books: VideoBook[];
 };
 
+export type MoodBook = {
+  title: string;
+  author: string;
+  isbn: string;
+  reason: string;
+};
+
+export type Mood = {
+  /** Used in the web address, e.g. comfort → /book-finder/comfort */
+  id: string;
+  label: string;
+  line: string;
+  /** Name of one of the site's photos (see src/lib/photos.ts) */
+  photo: string;
+  books: MoodBook[];
+};
+
 const videosDir = path.join(process.cwd(), "content", "videos");
 
 export async function getThisMonthsPick(): Promise<MonthlyPick> {
@@ -62,6 +81,35 @@ export const getVideos = cache(async (): Promise<VideoCompanion[]> => {
 export async function getVideo(slug: string) {
   const videos = await getVideos();
   return videos.find((video) => video.slug === slug);
+}
+
+export async function getMoods(): Promise<Mood[]> {
+  return moodsData.moods;
+}
+
+export async function getMood(id: string) {
+  const moods = await getMoods();
+  return moods.find((mood) => mood.id === id);
+}
+
+/**
+ * Where Roshi has already talked about a book: this month's pick,
+ * or the newest video that mentions it.
+ */
+export async function getBookMention(isbn: string) {
+  const pick = await getThisMonthsPick();
+  if (pick.isbn === isbn) {
+    return { label: "This month’s pick", href: "/this-months-pick" };
+  }
+  const videos = await getVideos();
+  const video = videos.find((v) => v.books.some((book) => book.isbn === isbn));
+  if (video) {
+    return {
+      label: video.title,
+      href: `/videos/${video.slug}#${bookAnchor(isbn)}`,
+    };
+  }
+  return undefined;
 }
 
 /** "2026-09-10" → "10 September 2026" */

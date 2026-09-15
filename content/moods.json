@@ -1,0 +1,128 @@
+{
+  "moods": [
+    {
+      "id": "comfort",
+      "label": "I want to be comforted",
+      "line": "Warm, kind books that feel like a hug.",
+      "photo": "cat-asleep-on-book",
+      "books": [
+        {
+          "title": "The House in the Cerulean Sea",
+          "author": "TJ Klune",
+          "isbn": "9781250217318",
+          "reason": "Found family on a magical island, and the kindest book I know."
+        },
+        {
+          "title": "Legends & Lattes",
+          "author": "Travis Baldree",
+          "isbn": "9781035042432",
+          "reason": "Nothing terrible happens and there is always coffee. That's the point."
+        },
+        {
+          "title": "Howl's Moving Castle",
+          "author": "Diana Wynne Jones",
+          "isbn": "9780061478789",
+          "reason": "A funny, cosy fairy tale that feels like sitting by a warm fire."
+        }
+      ]
+    },
+    {
+      "id": "mind-blown",
+      "label": "I want my mind blown",
+      "line": "Big ideas and worlds you won't stop thinking about.",
+      "photo": "lamp-lit-bookshop-corner",
+      "books": [
+        {
+          "title": "Klara and the Sun",
+          "author": "Kazuo Ishiguro",
+          "isbn": "9780593318171",
+          "reason": "A story about love and loneliness, seen through the eyes of a machine."
+        },
+        {
+          "title": "The Midnight Library",
+          "author": "Matt Haig",
+          "isbn": "9780525559474",
+          "reason": "Every life you didn't live, waiting on a library shelf. It stays with you."
+        },
+        {
+          "title": "The Night Circus",
+          "author": "Erin Morgenstern",
+          "isbn": "9780385534635",
+          "reason": "A world so vivid you'll swear you have walked through it."
+        }
+      ]
+    },
+    {
+      "id": "one-sitting",
+      "label": "Something I can read in one sitting",
+      "line": "Short enough to finish with one pot of tea.",
+      "photo": "steaming-mug-windowsill",
+      "books": [
+        {
+          "title": "Tuesdays with Morrie",
+          "author": "Mitch Albom",
+          "isbn": "9780767905923",
+          "reason": "Short, gentle and full of wisdom. An evening well spent."
+        },
+        {
+          "title": "The Remains of the Day",
+          "author": "Kazuo Ishiguro",
+          "isbn": "9780679731726",
+          "reason": "A slim, quiet novel you'll finish in one go and think about for weeks."
+        }
+      ]
+    },
+    {
+      "id": "make-me-cry",
+      "label": "Make me cry",
+      "line": "The good kind of heartbreak.",
+      "photo": "candle-plaid-blanket",
+      "books": [
+        {
+          "title": "The Book Thief",
+          "author": "Markus Zusak",
+          "isbn": "9780375842207",
+          "reason": "Death as the narrator and a girl who loves words. Bring tissues."
+        },
+        {
+          "title": "A Man Called Ove",
+          "author": "Fredrik Backman",
+          "isbn": "9781444775815",
+          "reason": "It starts out funny and ends with you sobbing into your tea."
+        },
+        {
+          "title": "Tuesdays with Morrie",
+          "author": "Mitch Albom",
+          "isbn": "9780767905923",
+          "reason": "A last lesson from a beloved teacher. Impossible not to cry."
+        }
+      ]
+    },
+    {
+      "id": "up-all-night",
+      "label": "Keep me up all night",
+      "line": "Page-turners you won't be able to put down.",
+      "photo": "hero-fairy-lights-book",
+      "books": [
+        {
+          "title": "The Night Circus",
+          "author": "Erin Morgenstern",
+          "isbn": "9780385534635",
+          "reason": "One more chapter, then another, and suddenly it's 2am."
+        },
+        {
+          "title": "Anxious People",
+          "author": "Fredrik Backman",
+          "isbn": "9781501160837",
+          "reason": "Twists and surprises that keep you turning the pages."
+        },
+        {
+          "title": "The Midnight Library",
+          "author": "Matt Haig",
+          "isbn": "9780525559474",
+          "reason": "Short chapters that are far too easy to keep reading."
+        }
+      ]
+    }
+  ]
+}
