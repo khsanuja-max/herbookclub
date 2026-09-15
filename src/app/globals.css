@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/*
+  Warm, cosy bookshop palette.
+  Use these in Tailwind classes, e.g. bg-paper, text-ink, text-terracotta.
+*/
+@theme inline {
+  --color-paper: #f7f1e8;
+  --color-parchment: #ede3d3;
+  --color-ink: #2b2320;
+  --color-ink-soft: #5c4f47;
+  --color-terracotta: #b5573a;
+  --color-sage: #7d8c6f;
+
+  --font-serif: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-source-sans), system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
