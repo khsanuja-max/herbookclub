@@ -133,3 +133,40 @@ Each mood gets its own tile on the Book Finder page and its own page, e.g. `herb
 **Nice extra:** if a book is also this month's pick or in one of your videos, its entry automatically links there.
 
 **To add a mood:** copy one whole mood block `{ … }`, put a comma between blocks, and change the details. **To remove a mood:** delete its block (and the comma before it).
+
+---
+
+## About page
+
+File: **`content/about.json`**
+
+The text in this file right now is a **placeholder** — replace it with your own words whenever you're ready.
+
+```json
+{
+  "title": "Hello, I'm Roshi",
+  "summary": "Two short sentences about the club.",
+  "photo": "cat-asleep-on-book",
+  "story": [
+    "First paragraph — shown larger, like an opening line.",
+    "Second paragraph.",
+    "Last paragraph."
+  ],
+  "howItWorks": [
+    {
+      "title": "One book a month",
+      "text": "A sentence about this part of the club.",
+      "photo": "steaming-mug-windowsill",
+      "href": "/this-months-pick"
+    }
+  ]
+}
+```
+
+| Line | What to put there |
+| --- | --- |
+| `title` | The big heading at the top of the page. |
+| `summary` | **Two short sentences** about you and the club. They appear at the top of the About page, and the home page will show them too. |
+| `photo` | The banner photo. Use one of the photo names listed in the Book Finder section above. |
+| `story` | Your story, one paragraph per line. The first paragraph is shown larger. |
+| `howItWorks` | The picture cards under "How the club works". Each has a `title`, a sentence of `text`, a `photo` name and `href` — the page it links to (`/this-months-pick`, `/videos` or `/book-finder`). |

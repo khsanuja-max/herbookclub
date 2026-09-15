@@ -4,6 +4,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
+import aboutData from "../../content/about.json";
 import moodsData from "../../content/moods.json";
 import thisMonthsPick from "../../content/this-months-pick.json";
 import { bookAnchor } from "./books";
@@ -54,7 +55,26 @@ export type Mood = {
   books: MoodBook[];
 };
 
+export type About = {
+  title: string;
+  /** Two short sentences, shown at the top of the About page and on the home page */
+  summary: string;
+  /** Name of one of the site's photos (see src/lib/photos.ts) */
+  photo: string;
+  story: string[];
+  howItWorks: {
+    title: string;
+    text: string;
+    photo: string;
+    href: string;
+  }[];
+};
+
 const videosDir = path.join(process.cwd(), "content", "videos");
+
+export async function getAbout(): Promise<About> {
+  return aboutData;
+}
 
 export async function getThisMonthsPick(): Promise<MonthlyPick> {
   return thisMonthsPick;

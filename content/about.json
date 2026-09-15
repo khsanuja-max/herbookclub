@@ -1,0 +1,30 @@
+{
+  "title": "Hello, I'm Roshi",
+  "summary": "Roshi's Book Club is a cosy corner of the internet for people who love getting lost in a good book. Pull up a chair, find your next read and stay a while.",
+  "photo": "cat-asleep-on-book",
+  "story": [
+    "I make videos about books: the ones I can't stop thinking about, the ones that feel like a warm blanket, and the ones I want to press into everyone's hands.",
+    "This club is a place to keep those conversations going. Every month there is one book we read together, every video has its own page listing the books in it, and the Book Finder helps you choose your next read by mood rather than genre.",
+    "However you found your way here, you are very welcome. Make a cup of tea and have a look around."
+  ],
+  "howItWorks": [
+    {
+      "title": "One book a month",
+      "text": "Each month I choose a book for us to read together, with my spoiler-free review and a video to go with it.",
+      "photo": "steaming-mug-windowsill",
+      "href": "/this-months-pick"
+    },
+    {
+      "title": "A page for every video",
+      "text": "Every book I mention in a video is listed on its own page, with a short note and where to buy or borrow it.",
+      "photo": "coffee-book-autumn-leaves",
+      "href": "/videos"
+    },
+    {
+      "title": "Books for every mood",
+      "text": "Not sure what to read next? Choose how you want to feel and find a book to match.",
+      "photo": "lamp-lit-bookshop-corner",
+      "href": "/book-finder"
+    }
+  ]
+}
