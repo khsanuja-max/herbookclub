@@ -1,24 +1,24 @@
-import Image from "next/image";
 import Link from "next/link";
-import heroPhoto from "@/assets/photos/hero-fairy-lights-book.jpg";
+import heroPoster from "@/assets/photos/hero-rain-poster.jpg";
+import { HeroVideo } from "@/components/HeroVideo";
 import { site } from "@/lib/site";
 
 export default function Home() {
   return (
     <>
       <section className="relative isolate flex h-[min(88svh,820px)] min-h-[560px] items-end overflow-hidden bg-night">
-        <Image
-          src={heroPhoto}
-          alt="An open book glowing under a tangle of fairy lights on a bed"
-          fill
-          sizes="100vw"
-          placeholder="blur"
-          loading="eager"
-          fetchPriority="high"
-          className="-z-10 object-cover object-[center_45%]"
+        <HeroVideo
+          poster={heroPoster}
+          alt="Raindrops on a window glowing in warm evening light"
+          desktopSrc="/videos/hero-rain-1080.mp4"
+          mobileSrc="/videos/hero-rain-540.mp4"
         />
         <div
-          className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/55 to-night/10"
+          className="absolute inset-0 -z-10 bg-lamplight/25 mix-blend-multiply"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-linear-to-t from-night via-night/55 to-night/45"
           aria-hidden="true"
         />
         <div
